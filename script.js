@@ -2,6 +2,20 @@ const chatArea = document.getElementById("chatArea");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
+function shouldAutoScroll() {
+  const threshold = 100;
+  return (
+    chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight
+    < threshold
+  );
+}
+
+function scrollToBottom(force = false) {
+  if (force || shouldAutoScroll()) {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  }
+}
+
 function addMessage(text, sender) {
   const msg = document.createElement("div");
   msg.classList.add("message", sender);
@@ -12,7 +26,7 @@ function addMessage(text, sender) {
   msg.appendChild(p);
   chatArea.appendChild(msg);
 
-  chatArea.scrollTop = chatArea.scrollHeight;
+  scrollToBottom();
 }
 
 function typeMessage(text, sender) {
@@ -24,15 +38,22 @@ function typeMessage(text, sender) {
   chatArea.appendChild(msg);
 
   let i = 0;
+  let counter = 0;
 
   function typeWriter() {
     if (i < text.length) {
       p.textContent += text.charAt(i);
       i++;
-      chatArea.scrollTop = chatArea.scrollHeight;
+      counter++;
+
+      if (counter % 4 === 0) {
+        scrollToBottom();
+      }
 
       const speed = Math.floor(Math.random() * 20) + 30;
       setTimeout(typeWriter, speed);
+    } else {
+      scrollToBottom();
     }
   }
 
@@ -53,7 +74,8 @@ function showTyping() {
   `;
 
   chatArea.appendChild(typing);
-  chatArea.scrollTop = chatArea.scrollHeight;
+
+  scrollToBottom();
 }
 
 function hideTyping() {
