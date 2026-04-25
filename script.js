@@ -2,11 +2,14 @@ const chatArea = document.getElementById("chatArea");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
+// lưu lịch sử chat ngắn hạn
+let chatHistory = [];
+
 function shouldAutoScroll() {
   const threshold = 100;
   return (
-    chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight
-    < threshold
+    chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight <
+    threshold
   );
 }
 
@@ -88,7 +91,10 @@ async function getAIReply(message) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({
+      message,
+      history: chatHistory,
+    }),
   });
 
   const data = await response.json();
@@ -100,14 +106,35 @@ async function sendMessage() {
   if (text === "") return;
 
   addMessage(text, "user");
-  userInput.value = "";
 
+  // lưu tin nhắn user
+  chatHistory.push({
+    role: "user",
+    content: text,
+  });
+
+  // chỉ giữ 12 tin gần nhất
+  if (chatHistory.length > 12) {
+    chatHistory = chatHistory.slice(-12);
+  }
+
+  userInput.value = "";
   showTyping();
 
   try {
     const aiReply = await getAIReply(text);
 
     hideTyping();
+
+    // lưu phản hồi bot
+    chatHistory.push({
+      role: "assistant",
+      content: aiReply,
+    });
+
+    if (chatHistory.length > 12) {
+      chatHistory = chatHistory.slice(-12);
+    }
 
     if (aiReply.length > 180) {
       addMessage(aiReply, "bot");
