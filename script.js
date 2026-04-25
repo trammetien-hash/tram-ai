@@ -15,18 +15,26 @@ function addMessage(text, sender) {
   chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-function botTyping() {
+function showTyping() {
   const typing = document.createElement("div");
   typing.classList.add("message", "bot");
   typing.setAttribute("id", "typingMsg");
 
-  const p = document.createElement("p");
-  p.textContent = "Typing...";
+  typing.innerHTML = `
+    <div class="typing-bubble">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  `;
 
-  typing.appendChild(p);
   chatArea.appendChild(typing);
-
   chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function hideTyping() {
+  const typingMsg = document.getElementById("typingMsg");
+  if (typingMsg) typingMsg.remove();
 }
 
 async function getAIReply(message) {
@@ -49,19 +57,15 @@ async function sendMessage() {
   addMessage(text, "user");
   userInput.value = "";
 
-  botTyping();
+  showTyping();
 
   try {
     const aiReply = await getAIReply(text);
 
-    const typingMsg = document.getElementById("typingMsg");
-    if (typingMsg) typingMsg.remove();
-
+    hideTyping();
     addMessage(aiReply, "bot");
   } catch (error) {
-    const typingMsg = document.getElementById("typingMsg");
-    if (typingMsg) typingMsg.remove();
-
+    hideTyping();
     addMessage("Đã xảy ra lỗi khi kết nối AI.", "bot");
   }
 }
