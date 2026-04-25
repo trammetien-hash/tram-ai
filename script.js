@@ -15,6 +15,30 @@ function addMessage(text, sender) {
   chatArea.scrollTop = chatArea.scrollHeight;
 }
 
+function typeMessage(text, sender) {
+  const msg = document.createElement("div");
+  msg.classList.add("message", sender);
+
+  const p = document.createElement("p");
+  msg.appendChild(p);
+  chatArea.appendChild(msg);
+
+  let i = 0;
+
+  function typeWriter() {
+    if (i < text.length) {
+      p.textContent += text.charAt(i);
+      i++;
+      chatArea.scrollTop = chatArea.scrollHeight;
+
+      const speed = Math.floor(Math.random() * 20) + 30;
+      setTimeout(typeWriter, speed);
+    }
+  }
+
+  typeWriter();
+}
+
 function showTyping() {
   const typing = document.createElement("div");
   typing.classList.add("message", "bot");
@@ -63,7 +87,7 @@ async function sendMessage() {
     const aiReply = await getAIReply(text);
 
     hideTyping();
-    addMessage(aiReply, "bot");
+    typeMessage(aiReply, "bot");
   } catch (error) {
     hideTyping();
     addMessage("Đã xảy ra lỗi khi kết nối AI.", "bot");
