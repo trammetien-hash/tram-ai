@@ -2,14 +2,6 @@ const chatArea = document.getElementById("chatArea");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
-const botReplies = [
-  "Tôi đang lắng nghe đây.",
-  "Nghe thú vị đấy.",
-  "Bạn muốn kể thêm không?",
-  "Tôi hiểu rồi.",
-  "Hôm nay bạn thế nào?"
-];
-
 function addMessage(text, sender) {
   const msg = document.createElement("div");
   msg.classList.add("message", sender);
@@ -37,7 +29,20 @@ function botTyping() {
   chatArea.scrollTop = chatArea.scrollHeight;
 }
 
-function sendMessage() {
+async function getAIReply(message) {
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ message }),
+  });
+
+  const data = await response.json();
+  return data.reply;
+}
+
+async function sendMessage() {
   const text = userInput.value.trim();
   if (text === "") return;
 
@@ -46,15 +51,19 @@ function sendMessage() {
 
   botTyping();
 
-  setTimeout(() => {
+  try {
+    const aiReply = await getAIReply(text);
+
     const typingMsg = document.getElementById("typingMsg");
     if (typingMsg) typingMsg.remove();
 
-    const randomReply =
-      botReplies[Math.floor(Math.random() * botReplies.length)];
+    addMessage(aiReply, "bot");
+  } catch (error) {
+    const typingMsg = document.getElementById("typingMsg");
+    if (typingMsg) typingMsg.remove();
 
-    addMessage(randomReply, "bot");
-  }, 1200);
+    addMessage("Đã xảy ra lỗi khi kết nối AI.", "bot");
+  }
 }
 
 sendBtn.addEventListener("click", sendMessage);
