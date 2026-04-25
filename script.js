@@ -46,11 +46,11 @@ function typeMessage(text, sender) {
       i++;
       counter++;
 
-      if (counter % 4 === 0) {
+      if (counter % 8 === 0) {
         scrollToBottom();
       }
 
-      const speed = Math.floor(Math.random() * 20) + 30;
+      const speed = Math.floor(Math.random() * 25) + 35;
       setTimeout(typeWriter, speed);
     } else {
       scrollToBottom();
@@ -74,7 +74,6 @@ function showTyping() {
   `;
 
   chatArea.appendChild(typing);
-
   scrollToBottom();
 }
 
@@ -109,7 +108,13 @@ async function sendMessage() {
     const aiReply = await getAIReply(text);
 
     hideTyping();
-    typeMessage(aiReply, "bot");
+
+    if (aiReply.length > 180) {
+      addMessage(aiReply, "bot");
+    } else {
+      typeMessage(aiReply, "bot");
+    }
+
   } catch (error) {
     hideTyping();
     addMessage("Đã xảy ra lỗi khi kết nối AI.", "bot");
