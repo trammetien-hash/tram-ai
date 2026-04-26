@@ -28,8 +28,6 @@ export default async function handler(req, res) {
 
     const messages = [
       {
-        role: "system",
-        content: `
     role: "system",
 content: `
 Bạn là một người bạn thân Gen Z, nói chuyện tự nhiên như chat ngoài đời.
