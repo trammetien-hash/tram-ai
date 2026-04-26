@@ -17,6 +17,7 @@ function scrollToBottom(force = false) {
 if (force || shouldAutoScroll()) {
 chatArea.scrollTop = chatArea.scrollHeight;
 }
+}
 
 function addMessage(text, sender) {
 const msg = document.createElement("div");
