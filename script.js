@@ -2,165 +2,150 @@ const chatArea = document.getElementById("chatArea");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
-// lưu lịch sử chat ngắn hạn
+// lưu lịch sử chat
 let chatHistory = [];
 
-function shouldAutoScroll() {
-const threshold = 100;
-return (
-chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight <
-threshold
-);
+/* 🔥 SCROLL */
+function scrollToBottom() {
+  chatArea.scrollTo({
+    top: chatArea.scrollHeight,
+    behavior: "smooth"
+  });
 }
 
-function scrollToBottom(force = false) {
-if (force || shouldAutoScroll()) {
-chatArea.scrollTop = chatArea.scrollHeight;
-}
-}
-
+/* 🔥 ADD MESSAGE */
 function addMessage(text, sender) {
-const msg = document.createElement("div");
-msg.classList.add("message", sender);
+  const msg = document.createElement("div");
+  msg.classList.add("message", sender);
 
-const p = document.createElement("p");
-p.textContent = text;
+  const p = document.createElement("p");
+  p.textContent = text;
 
-msg.appendChild(p);
-chatArea.appendChild(msg);
+  msg.appendChild(p);
+  chatArea.appendChild(msg);
 
-scrollToBottom();
+  scrollToBottom();
 }
 
+/* 🔥 TYPE EFFECT */
 function typeMessage(text, sender) {
-const msg = document.createElement("div");
-msg.classList.add("message", sender);
+  const msg = document.createElement("div");
+  msg.classList.add("message", sender);
 
-const p = document.createElement("p");
-msg.appendChild(p);
-chatArea.appendChild(msg);
+  const p = document.createElement("p");
+  msg.appendChild(p);
+  chatArea.appendChild(msg);
 
-let i = 0;
-let counter = 0;
+  let i = 0;
 
-function typeWriter() {
-if (i < text.length) {
-p.textContent += text.charAt(i);
-i++;
-counter++;
+  function typeWriter() {
+    if (i < text.length) {
+      p.textContent += text.charAt(i);
+      i++;
 
-if (counter % 8 === 0) {  
-    scrollToBottom();  
-  }  
+      if (i % 6 === 0) scrollToBottom();
 
-  const speed = Math.floor(Math.random() * 25) + 35;  
-  setTimeout(typeWriter, speed);  
-} else {  
-  scrollToBottom();  
+      const speed = Math.random() * 25 + 35;
+      setTimeout(typeWriter, speed);
+    } else {
+      scrollToBottom();
+    }
+  }
+
+  typeWriter();
 }
 
-}
-
-typeWriter();
-}
-
+/* 🔥 TYPING BUBBLE */
 function showTyping() {
-const typing = document.createElement("div");
-typing.classList.add("message", "bot");
-typing.setAttribute("id", "typingMsg");
+  const typing = document.createElement("div");
+  typing.classList.add("message", "bot");
+  typing.id = "typingMsg";
 
-typing.innerHTML =   <div class="typing-bubble">   <span></span>   <span></span>   <span></span>   </div>  ;
+  typing.innerHTML = `
+    <div class="typing-bubble">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  `;
 
-chatArea.appendChild(typing);
-scrollToBottom();
+  chatArea.appendChild(typing);
+  scrollToBottom();
 }
 
 function hideTyping() {
-const typingMsg = document.getElementById("typingMsg");
-if (typingMsg) typingMsg.remove();
+  const typing = document.getElementById("typingMsg");
+  if (typing) typing.remove();
 }
 
-// 🔥 detect tiếng Việt
+/* 🔥 detect tiếng Việt */
 function containsVietnamese(text) {
-return /[ăâđêôơưĂÂĐÊÔƠƯ]/.test(text);
+  return /[ăâđêôơưĂÂĐÊÔƠƯ]/.test(text);
 }
 
-// 🔥 gọi API (đã ép English)
+/* 🔥 API CALL */
 async function getAIReply(message) {
-const response = await fetch("/api/chat", {
-method: "POST",
-headers: {
-"Content-Type": "application/json",
-},
-body: JSON.stringify({
-message: message + "\n(Reply in English only. Do not use Vietnamese.)",
-history: chatHistory,
-}),
-});
+  const res = await fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: message + "\n(Reply in English only. Do not use Vietnamese.)",
+      history: chatHistory,
+    }),
+  });
 
-const data = await response.json();
-return data.reply;
+  const data = await res.json();
+  return data.reply;
 }
 
+/* 🔥 SEND MESSAGE */
 async function sendMessage() {
-const text = userInput.value.trim();
-if (text === "") return;
+  const text = userInput.value.trim();
+  if (!text) return;
 
-addMessage(text, "user");
+  addMessage(text, "user");
 
-// lưu user
-chatHistory.push({
-role: "user",
-content: text,
-});
+  chatHistory.push({ role: "user", content: text });
+  if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
 
-if (chatHistory.length > 12) {
-chatHistory = chatHistory.slice(-12);
+  userInput.value = "";
+  showTyping();
+
+  try {
+    let aiReply = await getAIReply(text);
+
+    // nếu bị tiếng Việt → ép lại
+    if (containsVietnamese(aiReply)) {
+      aiReply = await getAIReply(
+        text + "\nRewrite your previous answer in English only."
+      );
+    }
+
+    hideTyping();
+
+    chatHistory.push({ role: "assistant", content: aiReply });
+    if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+
+    if (aiReply.length > 180) {
+      addMessage(aiReply, "bot");
+    } else {
+      typeMessage(aiReply, "bot");
+    }
+
+  } catch (err) {
+    hideTyping();
+    addMessage("Something went wrong. Try again.", "bot");
+  }
 }
 
-userInput.value = "";
-showTyping();
-
-try {
-let aiReply = await getAIReply(text);
-
-// 🔥 nếu bị lạc tiếng → gọi lại  
-if (containsVietnamese(aiReply)) {  
-  aiReply = await getAIReply(  
-    text + "\nRewrite your previous answer in English only."  
-  );  
-}  
-
-hideTyping();  
-
-// lưu bot  
-chatHistory.push({  
-  role: "assistant",  
-  content: aiReply,  
-});  
-
-if (chatHistory.length > 12) {  
-  chatHistory = chatHistory.slice(-12);  
-}  
-
-if (aiReply.length > 180) {  
-  addMessage(aiReply, "bot");  
-} else {  
-  typeMessage(aiReply, "bot");  
-}
-
-} catch (error) {
-hideTyping();
-addMessage("Something went wrong. Please try again.", "bot");
-}
-}
-
+/* 🔥 EVENTS */
 sendBtn.addEventListener("click", sendMessage);
 
-userInput.addEventListener("keypress", (e) => {
-if (e.key === "Enter") {
-sendMessage();
-}
+userInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
 });
-
-Này hẻ
