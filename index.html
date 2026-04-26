@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chat Bot V2</title>
+  <title>Chat Bot</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -14,7 +14,7 @@
     <header class="top-bar">
       <div class="bot-info">
         <img src="assets/bot_idle.png" alt="Bot Avatar" class="avatar" />
-        <div>
+        <div class="bot-text">
           <h2>AI Companion</h2>
           <p class="status">Online</p>
         </div>
@@ -23,15 +23,9 @@
 
     <!-- Chat Area -->
     <main class="chat-area" id="chatArea">
-
       <div class="message bot">
-        <p>Xin chào, tôi là AI của bạn ✨</p>
+        <p>Hello. I’m here.</p>
       </div>
-
-      <div class="message user">
-        <p>Chào nhé!</p>
-      </div>
-
     </main>
 
     <!-- Input Area -->
@@ -39,9 +33,9 @@
       <input 
         type="text" 
         id="userInput" 
-        placeholder="Nhập tin nhắn..." 
+        placeholder="Type a message..."
+        autocomplete="off"
       />
-      <button id="sendBtn">Gửi</button>
     </footer>
 
   </div>
