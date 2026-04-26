@@ -85,6 +85,12 @@ function hideTyping() {
   if (typingMsg) typingMsg.remove();
 }
 
+// 🔥 detect tiếng Việt
+function containsVietnamese(text) {
+  return /[ăâđêôơưĂÂĐÊÔƠƯ]/.test(text);
+}
+
+// 🔥 gọi API (đã ép English)
 async function getAIReply(message) {
   const response = await fetch("/api/chat", {
     method: "POST",
@@ -92,7 +98,7 @@ async function getAIReply(message) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message,
+      message: message + "\n(Reply in English only. Do not use Vietnamese.)",
       history: chatHistory,
     }),
   });
@@ -107,13 +113,12 @@ async function sendMessage() {
 
   addMessage(text, "user");
 
-  // lưu tin nhắn user
+  // lưu user
   chatHistory.push({
     role: "user",
     content: text,
   });
 
-  // chỉ giữ 12 tin gần nhất
   if (chatHistory.length > 12) {
     chatHistory = chatHistory.slice(-12);
   }
@@ -122,11 +127,18 @@ async function sendMessage() {
   showTyping();
 
   try {
-    const aiReply = await getAIReply(text);
+    let aiReply = await getAIReply(text);
+
+    // 🔥 nếu bị lạc tiếng → gọi lại
+    if (containsVietnamese(aiReply)) {
+      aiReply = await getAIReply(
+        text + "\nRewrite your previous answer in English only."
+      );
+    }
 
     hideTyping();
 
-    // lưu phản hồi bot
+    // lưu bot
     chatHistory.push({
       role: "assistant",
       content: aiReply,
@@ -144,7 +156,7 @@ async function sendMessage() {
 
   } catch (error) {
     hideTyping();
-    addMessage("Đã xảy ra lỗi khi kết nối AI.", "bot");
+    addMessage("Something went wrong. Please try again.", "bot");
   }
 }
 
