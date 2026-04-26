@@ -13,10 +13,11 @@ function shouldAutoScroll() {
   );
 }
 
-function scrollToBottom(force = false) {
-  if (force || shouldAutoScroll()) {
-    chatArea.scrollTop = chatArea.scrollHeight;
-  }
+function scrollToBottom() {
+  chatArea.scrollTo({
+    top: chatArea.scrollHeight,
+    behavior: "smooth"
+  });
 }
 
 function addMessage(text, sender) {
@@ -29,7 +30,7 @@ function addMessage(text, sender) {
   msg.appendChild(p);
   chatArea.appendChild(msg);
 
-  scrollToBottom();
+  scrollToBottom(true); // 🔥 force luôn
 }
 
 function typeMessage(text, sender) {
@@ -77,8 +78,7 @@ function showTyping() {
   `;
 
   chatArea.appendChild(typing);
-  scrollToBottom();
-}
+scrollToBottom(true);
 
 function hideTyping() {
   const typingMsg = document.getElementById("typingMsg");
