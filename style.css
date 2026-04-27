@@ -5,6 +5,11 @@
   font-family: Inter, Arial, sans-serif;
 }
 
+/* 🎀 Accent màu hồng */
+:root {
+  --pink: #F6B6B7;
+}
+
 body {
   background: radial-gradient(circle at 20% 30%, #27153D, transparent 40%),
               radial-gradient(circle at 80% 70%, rgba(39,21,61,0.25), transparent 50%),
@@ -46,9 +51,11 @@ body {
   box-shadow: 0 0 14px rgba(75,53,106,0.6);
 }
 
+/* ✨ Tên bot hồng */
 .bot-info h2 {
   font-size: 15px;
   font-weight: 500;
+  color: var(--pink);
 }
 
 .status {
@@ -95,10 +102,10 @@ body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.45);
 }
 
-/* User */
+/* ✨ User chữ hồng (đã chỉnh sáng để không chìm) */
 .message.user {
   background: linear-gradient(135deg, #3A2A55, #4B356A);
-  color: #FFFFFF;
+  color: #FFE4E6;
   align-self: flex-end;
   border-radius: 18px 18px 6px 18px;
   box-shadow: 0 6px 20px rgba(39,21,61,0.5);
@@ -128,8 +135,9 @@ body {
   transition: 0.2s;
 }
 
+/* ✨ Placeholder hồng nhẹ */
 .input-bar input::placeholder {
-  color: #8E7FA3;
+  color: rgba(246,182,183,0.6);
 }
 
 .input-bar input:focus {
@@ -149,9 +157,10 @@ body {
   box-shadow: 0 0 16px rgba(39,21,61,0.6);
 }
 
+/* ✨ Hover glow hồng */
 .input-bar button:hover {
   transform: scale(1.06);
-  box-shadow: 0 0 26px rgba(39,21,61,0.8);
+  box-shadow: 0 0 26px rgba(246,182,183,0.7);
 }
 
 /* Typing */
@@ -164,11 +173,12 @@ body {
   border: 1px solid #3A2A55;
 }
 
+/* ✨ Dot hồng */
 .typing-bubble span {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #4B356A;
+  background: var(--pink);
   animation: bounce 1.2s infinite;
 }
 
@@ -201,4 +211,4 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-  }
+                         }
