@@ -6,8 +6,10 @@
 }
 
 body {
-  background: linear-gradient(135deg, #F5ECD2, #EDE0C8);
-  color: #3A2E2E;
+  background: radial-gradient(circle at 20% 30%, #27153D, transparent 40%),
+              radial-gradient(circle at 80% 70%, rgba(39,21,61,0.25), transparent 50%),
+              linear-gradient(135deg, #0B0A16, #27153D);
+  color: #F2ECF8;
   height: 100vh;
 }
 
@@ -20,15 +22,38 @@ body {
 
 /* Header */
 .top-bar {
-  background: rgba(255,255,255,0.5);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid #E3D5C7;
+  background: rgba(39, 21, 61, 0.7);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid #3A2A55;
   padding: 14px 18px;
+}
+
+.bot-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  transition: 0.3s;
+}
+
+.avatar:hover {
+  box-shadow: 0 0 14px rgba(75,53,106,0.6);
+}
+
+.bot-info h2 {
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .status {
   font-size: 12px;
-  color: #9A7B6F;
+  color: #B8A9CC;
 }
 
 /* Chat */
@@ -41,56 +66,74 @@ body {
   gap: 14px;
 }
 
+/* Empty */
+.empty-state {
+  margin: auto;
+  text-align: center;
+  color: #8E7FA3;
+  font-size: 14px;
+  opacity: 0.6;
+}
+
 /* Message */
 .message {
   max-width: 70%;
   padding: 12px 16px;
-  border-radius: 16px;
-  font-size: 14px;
+  border-radius: 18px;
   line-height: 1.5;
+  font-size: 14px;
   animation: fadeIn 0.25s ease;
+  backdrop-filter: blur(6px);
 }
 
 /* Bot */
 .message.bot {
-  background: #FFFFFF;
-  border: 1px solid #E3D5C7;
-  color: #3A2E2E;
+  background: #1B1530;
+  border: 1px solid #3A2A55;
+  color: #F2ECF8;
   align-self: flex-start;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45);
 }
 
-/* User – điểm nhấn */
+/* User */
 .message.user {
-  background: #8C3A2B; /* wine nhẹ */
+  background: linear-gradient(135deg, #3A2A55, #4B356A);
   color: #FFFFFF;
   align-self: flex-end;
-  border-radius: 16px 16px 4px 16px;
-  box-shadow: 0 6px 16px rgba(140,58,43,0.25);
+  border-radius: 18px 18px 6px 18px;
+  box-shadow: 0 6px 20px rgba(39,21,61,0.5);
 }
 
 /* Input */
 .input-bar {
   display: flex;
+  align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  background: rgba(255,255,255,0.6);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid #E3D5C7;
+  background: rgba(39, 21, 61, 0.7);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid #3A2A55;
 }
 
+/* Input field */
 .input-bar input {
   flex: 1;
   padding: 12px 16px;
-  border-radius: 18px;
-  border: 1px solid #E3D5C7;
-  background: #FFFFFF;
-  color: #3A2E2E;
+  border-radius: 20px;
+  border: none;
+  background: #1B1530;
+  color: #F2ECF8;
+  font-size: 14px;
   outline: none;
+  transition: 0.2s;
 }
 
 .input-bar input::placeholder {
-  color: #B7A79A;
+  color: #8E7FA3;
+}
+
+.input-bar input:focus {
+  background: #241A3A;
 }
 
 /* Button */
@@ -98,42 +141,64 @@ body {
   padding: 10px 14px;
   border-radius: 50%;
   border: none;
-  background: #8C3A2B;
+  background: linear-gradient(135deg, #3A2A55, #4B356A);
   color: #FFFFFF;
+  font-size: 16px;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.25s;
+  box-shadow: 0 0 16px rgba(39,21,61,0.6);
 }
 
 .input-bar button:hover {
-  transform: scale(1.05);
-  background: #A44A3A;
+  transform: scale(1.06);
+  box-shadow: 0 0 26px rgba(39,21,61,0.8);
 }
 
 /* Typing */
 .typing-bubble {
-  background: #FFFFFF;
-  border: 1px solid #E3D5C7;
+  background: #1B1530;
   padding: 8px 12px;
   border-radius: 16px;
   display: inline-flex;
   gap: 5px;
+  border: 1px solid #3A2A55;
 }
 
 .typing-bubble span {
   width: 6px;
   height: 6px;
-  background: #8C3A2B;
   border-radius: 50%;
+  background: #4B356A;
   animation: bounce 1.2s infinite;
+}
+
+.typing-bubble span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-bubble span:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
 /* Animation */
 @keyframes bounce {
-  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-  40% { transform: scale(1); opacity: 1; }
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.4;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
   }
