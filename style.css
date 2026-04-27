@@ -43,7 +43,7 @@ body {
 }
 
 .avatar:hover {
-  box-shadow: 0 0 12px rgba(108,122,224,0.5);
+  box-shadow: 0 0 14px rgba(108,122,224,0.6);
 }
 
 .bot-info h2 {
@@ -96,13 +96,13 @@ body {
   box-shadow: 0 6px 18px rgba(0,0,0,0.4);
 }
 
-/* User (điểm nhấn chính) */
+/* User – FIX CHỮ */
 .message.user {
-  background: #6C7AE0;
-  color: #0b1020;
+  background: linear-gradient(135deg, #6C7AE0, #8EA2FF);
+  color: #FFFFFF; /* đổi sang trắng để nổi */
   align-self: flex-end;
   border-radius: 18px 18px 6px 18px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  box-shadow: 0 6px 20px rgba(108,122,224,0.35);
 }
 
 /* Input */
@@ -142,17 +142,17 @@ body {
   padding: 10px 14px;
   border-radius: 50%;
   border: none;
-  background: #6C7AE0;
-  color: #0b1020;
+  background: linear-gradient(135deg, #6C7AE0, #8EA2FF);
+  color: #FFFFFF;
   font-size: 16px;
   cursor: pointer;
   transition: 0.25s;
-  box-shadow: 0 0 14px rgba(108,122,224,0.5);
+  box-shadow: 0 0 16px rgba(108,122,224,0.5);
 }
 
 .input-bar button:hover {
   transform: scale(1.06);
-  box-shadow: 0 0 24px rgba(108,122,224,0.7);
+  box-shadow: 0 0 26px rgba(108,122,224,0.7);
 }
 
 /* Typing */
@@ -169,7 +169,7 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #6C7AE0;
+  background: #8EA2FF;
   animation: bounce 1.2s infinite;
 }
 
