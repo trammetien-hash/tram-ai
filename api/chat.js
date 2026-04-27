@@ -1,3 +1,5 @@
+import supabase from "../lib/supabase.js";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -100,6 +102,27 @@ Warm, real, and easygoing — like someone you can casually talk to anytime.
     const reply =
       data?.choices?.[0]?.message?.content?.trim() || "No response.";
 
+    // tạo chat id chung cho user + bot
+    const chatId = crypto.randomUUID();
+
+    // lưu vào Supabase
+    const { error: dbError } = await supabase.from("messages").insert([
+      {
+        role: "user",
+        content: message,
+        chat_id: chatId,
+      },
+      {
+        role: "assistant",
+        content: reply,
+        chat_id: chatId,
+      },
+    ]);
+
+    if (dbError) {
+      console.error("Supabase Error:", dbError);
+    }
+
     return res.status(200).json({
       reply,
     });
@@ -110,4 +133,4 @@ Warm, real, and easygoing — like someone you can casually talk to anytime.
       error: "Server error",
     });
   }
-      }
+        }
