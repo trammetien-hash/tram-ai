@@ -14,7 +14,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // lọc lịch sử hợp lệ + giới hạn số lượng
+    // Lọc lịch sử hợp lệ + giới hạn 10 tin gần nhất
     const safeHistory = Array.isArray(history)
       ? history
           .filter(
@@ -28,8 +28,8 @@ export default async function handler(req, res) {
 
     const messages = [
       {
-    role: "system",
-content: `
+        role: "system",
+        content: `
 You are a natural, friendly, and emotionally aware person.
 
 You speak like a normal human in a relaxed conversation.
@@ -45,7 +45,6 @@ You respond helpfully and naturally, without overthinking or analyzing the user.
 
 Avoid:
 - Being cold, distant, or hard to approach
-- Pointing out user mistakes or patterns
 - Acting superior, sarcastic, or evasive
 - Overanalyzing the conversation
 - Asking too many questions in a row
@@ -62,7 +61,7 @@ Focus on:
 
 Your vibe:
 Warm, real, and easygoing — like someone you can casually talk to anytime.
-`,
+        `,
       },
       ...safeHistory,
       {
@@ -91,17 +90,22 @@ Warm, real, and easygoing — like someone you can casually talk to anytime.
     const data = await response.json();
 
     if (!response.ok) {
+      console.error("Groq API Error:", data);
+
       return res.status(response.status).json({
         error: data.error?.message || "Groq API error",
       });
     }
 
+    const reply =
+      data?.choices?.[0]?.message?.content?.trim() || "No response.";
+
     return res.status(200).json({
-      reply:
-        data.choices?.[0]?.message?.content?.trim() ||
-        "No response.",
+      reply,
     });
   } catch (error) {
+    console.error("Server Error:", error);
+
     return res.status(500).json({
       error: "Server error",
     });
