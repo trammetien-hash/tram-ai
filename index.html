@@ -8,39 +8,89 @@
 </head>
 <body>
 
-  <div class="app">
+<div id="app">
 
-    <!-- Header -->
-    <header class="top-bar">
-      <div class="bot-info">
-        <img src="assets/bot_idle.png" alt="Bot Avatar" class="avatar" />
-        <div class="bot-text">
-          <h2>AI Companion</h2>
-          <p class="status">Online</p>
+  <!-- 🏠 HOME (CHAT CỦA M - GIỮ NGUYÊN) -->
+  <div id="home" class="page active">
+    <div class="app">
+
+      <header class="top-bar">
+        <div class="bot-info">
+          <img src="assets/bot_idle.png" alt="Bot Avatar" class="avatar" />
+          <div class="bot-text">
+            <h2 id="chatName">AI Companion</h2>
+            <p class="status">Online</p>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <!-- Chat Area -->
-    <main class="chat-area" id="chatArea">
-      <div class="empty-state" id="emptyState">
-        <p>Start a conversation</p>
-      </div>
-    </main>
+      <main class="chat-area" id="chatArea">
+        <div class="empty-state" id="emptyState">
+          <p>Start a conversation</p>
+        </div>
+      </main>
 
-    <!-- Input Area -->
-    <footer class="input-bar">
-      <input 
-        type="text" 
-        id="userInput" 
-        placeholder="Type a message..."
-        autocomplete="off"
-      />
-      <button id="sendBtn">Send</button>
-    </footer>
+      <footer class="input-bar">
+        <input 
+          type="text" 
+          id="userInput" 
+          placeholder="Type a message..."
+          autocomplete="off"
+        />
+        <button id="sendBtn">Send</button>
+      </footer>
 
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- 🔍 DISCOVER -->
+  <div id="discover" class="page">
+    <div class="discover-page">
+      <input type="text" placeholder="Search..." id="searchInput">
+      <div id="characterList"></div>
+    </div>
+  </div>
+
+  <!-- ➕ CREATE -->
+  <div id="create" class="page">
+    <div class="create-page">
+      <h2>Create Character</h2>
+
+      <input type="text" id="createName" placeholder="Name">
+      <input type="text" id="createDesc" placeholder="Description">
+      <input type="text" id="createImg" placeholder="Image URL">
+
+      <button id="createBtn">Create</button>
+    </div>
+  </div>
+
+  <!-- 💬 CHATS -->
+  <div id="chats" class="page">
+    <div class="chats-page">
+      <h2>Chats</h2>
+      <p>Coming soon...</p>
+    </div>
+  </div>
+
+  <!-- 👤 PROFILE -->
+  <div id="profile" class="page">
+    <div class="profile-page">
+      <h2>Profile</h2>
+      <p>Settings, info...</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- 📱 NAVBAR -->
+<div class="bottom-nav">
+  <button onclick="switchTab('home')">🏠</button>
+  <button onclick="switchTab('discover')">🔍</button>
+  <button onclick="switchTab('create')">➕</button>
+  <button onclick="switchTab('chats')">💬</button>
+  <button onclick="switchTab('profile')">👤</button>
+</div>
+
+<script src="script.js"></script>
 </body>
-</html>
+          </html>
