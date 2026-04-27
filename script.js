@@ -149,3 +149,92 @@ userInput.addEventListener("keydown", (e) => {
     sendMessage();
   }
 });
+
+// 🧭 SWITCH TAB
+function switchTab(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// 🔥 DATA NHÂN VẬT
+let characters = JSON.parse(localStorage.getItem("characters")) || [
+  { name: "Noah", desc: "Gentle boy" },
+  { name: "Kai", desc: "Bad boy" }
+];
+
+// 💾 SAVE
+function saveCharacters() {
+  localStorage.setItem("characters", JSON.stringify(characters));
+}
+
+// 🎴 RENDER DISCOVER
+function renderCharacters(list = characters) {
+  const box = document.getElementById("characterList");
+  if (!box) return;
+
+  box.innerHTML = "";
+
+  list.forEach(c => {
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <h3>${c.name}</h3>
+      <p>${c.desc}</p>
+    `;
+
+    div.onclick = () => {
+      localStorage.setItem("currentCharacter", JSON.stringify(c));
+      document.getElementById("chatName").innerText = c.name;
+      switchTab("home");
+    };
+
+    box.appendChild(div);
+  });
+}
+
+renderCharacters();
+
+// 🔍 SEARCH
+const searchInput = document.getElementById("searchInput");
+if (searchInput) {
+  searchInput.addEventListener("input", (e) => {
+    const v = e.target.value.toLowerCase();
+    const filtered = characters.filter(c =>
+      c.name.toLowerCase().includes(v)
+    );
+    renderCharacters(filtered);
+  });
+}
+
+// ➕ CREATE CHARACTER
+const createBtn = document.getElementById("createBtn");
+
+if (createBtn) {
+  createBtn.addEventListener("click", () => {
+    const name = document.getElementById("createName").value;
+    const desc = document.getElementById("createDesc").value;
+    const img = document.getElementById("createImg").value;
+
+    if (!name) return;
+
+    characters.push({ name, desc, img });
+    saveCharacters();
+    renderCharacters();
+
+    // reset input
+    document.getElementById("createName").value = "";
+    document.getElementById("createDesc").value = "";
+    document.getElementById("createImg").value = "";
+
+    switchTab("discover");
+  });
+}
+
+// 🧠 LOAD NHÂN VẬT ĐANG CHAT
+const savedChar = localStorage.getItem("currentCharacter");
+if (savedChar) {
+  const char = JSON.parse(savedChar);
+  const nameEl = document.getElementById("chatName");
+  if (nameEl) nameEl.innerText = char.name;
+                       }
