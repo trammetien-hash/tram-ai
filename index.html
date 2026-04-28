@@ -99,12 +99,16 @@
 
 <!-- 📱 NAVBAR -->
 <div class="bottom-nav">
-  <button onclick="switchTab('home')">🏠</button>
-  <button onclick="switchTab('discover')">🔍</button>
-  <button onclick="switchTab('create')">➕</button>
-  <button onclick="switchTab('chats')">💬</button>
-  <button onclick="switchTab('profile')">👤</button>
-</div>
+  <div class="nav-item"><i data-lucide="home"></i><span>Home</span></div>
+  <div class="nav-item active"><i data-lucide="search"></i><span>Discover</span></div>
+
+  <div class="nav-center">
+    <i data-lucide="plus"></i>
+  </div>
+
+  <div class="nav-item"><i data-lucide="message-circle"></i><span>Chats</span></div>
+  <div class="nav-item"><i data-lucide="user"></i><span>Profile</span></div>
+          </div>
 
 <script src="script.js"></script>
 </body>
