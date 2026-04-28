@@ -194,17 +194,19 @@ body {
 }
 
 /* 📱 NAVBAR PRO MAX */
-.bottom-nav {
+  .bottom-nav {
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 75px;
 
-  background: #0d0d0d;
-  border-top: 1px solid #1f1f1f;
+  background: rgba(13, 13, 13, 0.95); /* đẹp hơn + blur */
+  backdrop-filter: blur(10px);
+
+  border-top: 1px solid rgba(255,255,255,0.06);
 
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* 🔥 CHÌA KHÓA */
+  grid-template-columns: repeat(5, 1fr);
 
   align-items: center;
   text-align: center;
@@ -219,20 +221,23 @@ body {
   align-items: center;
   justify-content: center;
   gap: 4px;
+  cursor: pointer;
 }
 
 /* icon */
 .nav-item i {
   width: 22px;
   height: 22px;
-  stroke: #888;
-  transition: 0.2s;
+  stroke: #aaa; /* FIX contrast */
+  transition: 0.2s ease;
 }
 
 /* text */
 .nav-item span {
   font-size: 11px;
-  color: #777;
+  color: #bdbdbd; /* FIX contrast */
+  font-weight: 500;
+  transition: 0.2s;
 }
 
 /* active */
@@ -241,20 +246,20 @@ body {
 }
 
 .nav-item.active span {
-  color: #a78bfa;
+  color: #c4b5fd;
 }
 
-/* hover */
-.nav-item:hover i {
-  stroke: #fff;
+/* hover nhẹ thôi cho mobile */
+.nav-item:active {
+  transform: scale(0.92);
 }
 
 /* 🔥 NÚT + CHUẨN APP */
 .nav-center {
   position: relative;
 
-  width: 60px;
-  height: 60px;
+  width: 62px;
+  height: 62px;
   border-radius: 50%;
 
   background: linear-gradient(135deg, #7c3aed, #ec4899);
@@ -264,11 +269,13 @@ body {
   justify-content: center;
 
   margin: 0 auto;
-  margin-top: -30px; /* 🔥 đẩy lên */
+  margin-top: -32px;
 
   box-shadow:
     0 10px 25px rgba(168,85,247,0.5),
-    0 0 30px rgba(236,72,153,0.4);
+    0 0 35px rgba(236,72,153,0.45);
+
+  transition: 0.2s;
 }
 
 /* icon + */
@@ -282,13 +289,18 @@ body {
 .nav-center::after {
   content: "";
   position: absolute;
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
 
-  background: radial-gradient(circle, rgba(168,85,247,0.3), transparent 70%);
+  background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 70%);
   z-index: -1;
 }
+
+/* click effect */
+.nav-center:active {
+  transform: scale(0.9);
+    }
 
 /* 🔍 DISCOVER */
 .discover-page {
