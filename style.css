@@ -198,123 +198,97 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 70px;
+  height: 75px;
 
-  background: rgba(13,13,13,0.9);
-  backdrop-filter: blur(12px);
-  border-top: 1px solid rgba(255,255,255,0.05);
+  background: #0d0d0d;
+  border-top: 1px solid #1f1f1f;
 
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 🔥 CHÌA KHÓA */
+
   align-items: center;
+  text-align: center;
 
   z-index: 100;
 }
 
-/* ITEM */
+/* item */
 .nav-item {
-  flex: 1;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-
-  cursor: pointer;
-  position: relative;
+  justify-content: center;
+  gap: 4px;
 }
 
-/* ICON */
+/* icon */
 .nav-item i {
   width: 22px;
   height: 22px;
-  stroke: #777;
-  transition: 0.25s ease;
+  stroke: #888;
+  transition: 0.2s;
 }
 
-/* ACTIVE */
+/* text */
+.nav-item span {
+  font-size: 11px;
+  color: #777;
+}
+
+/* active */
 .nav-item.active i {
   stroke: #a78bfa;
-  transform: scale(1.15);
 }
 
-/* HOVER */
+.nav-item.active span {
+  color: #a78bfa;
+}
+
+/* hover */
 .nav-item:hover i {
   stroke: #fff;
-  transform: scale(1.15);
 }
 
-/* 🔥 UNDERLINE GLOW */
-.nav-item.active::after {
-  content: "";
-  position: absolute;
-  bottom: 8px;
-  width: 18px;
-  height: 3px;
-  border-radius: 10px;
-
-  background: linear-gradient(90deg, #7c3aed, #ec4899);
-  box-shadow: 0 0 10px rgba(168,85,247,0.8);
-}
-
-/* ➕ BUTTON */
+/* 🔥 NÚT + CHUẨN APP */
 .nav-center {
-  position: absolute;
-  left: 50%;
-  top: -22px;
-  transform: translateX(-50%);
+  position: relative;
 
-  width: 64px;
-  height: 64px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
 
   background: linear-gradient(135deg, #7c3aed, #ec4899);
 
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+
+  margin: 0 auto;
+  margin-top: -30px; /* 🔥 đẩy lên */
 
   box-shadow:
     0 10px 25px rgba(168,85,247,0.5),
-    0 0 40px rgba(236,72,153,0.4);
-
-  z-index: 101;
-  cursor: pointer;
-  transition: 0.2s;
+    0 0 30px rgba(236,72,153,0.4);
 }
 
-/* ICON + */
+/* icon + */
 .nav-center i {
   color: #fff;
   width: 26px;
   height: 26px;
 }
 
-/* GLOW OUTER */
+/* glow */
 .nav-center::after {
   content: "";
   position: absolute;
-  width: 90px;
-  height: 90px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
 
-  background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 70%);
+  background: radial-gradient(circle, rgba(168,85,247,0.3), transparent 70%);
   z-index: -1;
 }
-
-/* CLICK EFFECT */
-.nav-center:active {
-  transform: translateX(-50%) scale(0.9);
-}
-
-/* 💫 FLOAT ANIMATION NHẸ */
-@keyframes floatBtn {
-  0% { transform: translate(-50%, 0); }
-  50% { transform: translate(-50%, -2px); }
-  100% { transform: translate(-50%, 0); }
-}
-
-.nav-center {
-  animation: floatBtn 3s ease-in-out infinite;
-                              }
 
 /* 🔍 DISCOVER */
 .discover-page {
