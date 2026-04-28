@@ -67,13 +67,37 @@
 
 <!-- NAV -->
 <nav class="bottom-nav">
-  <div class="nav-item active" data-page="home">Home</div>
-  <div class="nav-item" data-page="discover">Discover</div>
-  <div class="nav-center" id="openCreate">+</div>
-  <div class="nav-item" data-page="chats">Chats</div>
-  <div class="nav-item" data-page="profile">Profile</div>
+
+  <div class="nav-item active" data-page="home">
+    <i data-lucide="home"></i>
+    <span>Home</span>
+  </div>
+
+  <div class="nav-item" data-page="discover">
+    <i data-lucide="search"></i>
+    <span>Discover</span>
+  </div>
+
+  <div class="nav-center" id="openCreate">
+    <i data-lucide="plus"></i>
+  </div>
+
+  <div class="nav-item" data-page="chats">
+    <i data-lucide="message-circle"></i>
+    <span>Chats</span>
+  </div>
+
+  <div class="nav-item" data-page="profile">
+    <i data-lucide="user"></i>
+    <span>Profile</span>
+  </div>
+
 </nav>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
 <script src="script.js"></script>
 </body>
     </html>
