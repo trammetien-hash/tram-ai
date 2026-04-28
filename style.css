@@ -8,15 +8,14 @@
 body {
   background: #0D0D0D;
   color: #EAEAEA;
-  height: 100vh;
 }
 
 /* App */
 .app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  padding-bottom: 70px;
+  height: 100%;
+  padding-bottom: 90px; /* FIX nav che */
 }
 
 /* Header */
@@ -52,7 +51,7 @@ body {
 
 .status {
   font-size: 12px;
-  color: #888;
+  color: #aaa; /* FIX dễ nhìn hơn */
 }
 
 /* Chat */
@@ -63,15 +62,16 @@ body {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  scroll-behavior: smooth; /* FIX mượt */
 }
 
 /* Empty */
 .empty-state {
   margin: auto;
   text-align: center;
-  color: #666;
+  color: #888; /* FIX */
   font-size: 14px;
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 /* Message */
@@ -182,7 +182,7 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
-    }
+}
 
 /* 🧱 PAGE SYSTEM */
 .page {
@@ -193,21 +193,24 @@ body {
   display: block;
 }
 
-/* 📱 NAVBAR PRO MAX */
-  .bottom-nav {
+/* 📱 NAVBAR */
+.bottom-nav {
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 75px;
 
-  background: rgba(13, 13, 13, 0.95); /* đẹp hơn + blur */
-  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    to top,
+    rgba(13,13,13,0.95),
+    rgba(13,13,13,0.7)
+  );
 
+  backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255,255,255,0.06);
 
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-
   align-items: center;
   text-align: center;
 
@@ -222,22 +225,21 @@ body {
   justify-content: center;
   gap: 4px;
   cursor: pointer;
+  transition: 0.15s;
 }
 
 /* icon */
 .nav-item i {
   width: 22px;
   height: 22px;
-  stroke: #aaa; /* FIX contrast */
-  transition: 0.2s ease;
+  stroke: #aaa;
 }
 
 /* text */
 .nav-item span {
   font-size: 11px;
-  color: #bdbdbd; /* FIX contrast */
+  color: #bdbdbd;
   font-weight: 500;
-  transition: 0.2s;
 }
 
 /* active */
@@ -249,63 +251,54 @@ body {
   color: #c4b5fd;
 }
 
-/* hover nhẹ thôi cho mobile */
+/* click */
 .nav-item:active {
-  transform: scale(0.92);
+  transform: scale(0.85);
+  opacity: 0.7;
 }
 
-/* 🔥 NÚT + CHUẨN APP */
+/* center btn */
 .nav-center {
   position: relative;
-
   width: 62px;
   height: 62px;
   border-radius: 50%;
-
   background: linear-gradient(135deg, #7c3aed, #ec4899);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   margin: 0 auto;
   margin-top: -32px;
-
   box-shadow:
     0 10px 25px rgba(168,85,247,0.5),
     0 0 35px rgba(236,72,153,0.45);
-
   transition: 0.2s;
 }
 
-/* icon + */
 .nav-center i {
   color: #fff;
   width: 26px;
   height: 26px;
 }
 
-/* glow */
 .nav-center::after {
   content: "";
   position: absolute;
   width: 90px;
   height: 90px;
   border-radius: 50%;
-
   background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 70%);
   z-index: -1;
 }
 
-/* click effect */
 .nav-center:active {
   transform: scale(0.9);
-    }
+}
 
 /* 🔍 DISCOVER */
 .discover-page {
   padding: 16px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 }
 
 .discover-page input {
@@ -353,13 +346,13 @@ body {
 
 .card p {
   font-size: 12px;
-  color: #888;
+  color: #aaa;
 }
 
 /* ➕ CREATE */
 .create-page {
   padding: 20px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
 }
 
 .create-page input {
@@ -387,6 +380,6 @@ body {
 .chats-page,
 .profile-page {
   padding: 20px;
-  padding-bottom: 80px;
+  padding-bottom: 90px;
   color: #888;
-  }
+                            }
