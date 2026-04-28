@@ -1,19 +1,23 @@
+// =======================
+// 💬 CHAT SYSTEM
+// =======================
+
 const chatArea = document.getElementById("chatArea");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
-// lưu lịch sử chat
 let chatHistory = [];
 
-/* 🔥 SCROLL */
+/* 🔽 SCROLL */
 function scrollToBottom() {
+  if (!chatArea) return;
   chatArea.scrollTo({
     top: chatArea.scrollHeight,
     behavior: "smooth"
   });
 }
 
-/* 🔥 ADD MESSAGE */
+/* 💬 ADD MESSAGE */
 function addMessage(text, sender) {
   const msg = document.createElement("div");
   msg.classList.add("message", sender);
@@ -27,7 +31,7 @@ function addMessage(text, sender) {
   scrollToBottom();
 }
 
-/* 🔥 TYPE EFFECT */
+/* ⌨️ TYPE EFFECT */
 function typeMessage(text, sender) {
   const msg = document.createElement("div");
   msg.classList.add("message", sender);
@@ -55,7 +59,7 @@ function typeMessage(text, sender) {
   typeWriter();
 }
 
-/* 🔥 TYPING BUBBLE */
+/* 🤖 TYPING */
 function showTyping() {
   const typing = document.createElement("div");
   typing.classList.add("message", "bot");
@@ -78,12 +82,12 @@ function hideTyping() {
   if (typing) typing.remove();
 }
 
-/* 🔥 detect tiếng Việt */
+/* 🌐 VIETNAMESE CHECK */
 function containsVietnamese(text) {
   return /[ăâđêôơưĂÂĐÊÔƠƯ]/.test(text);
 }
 
-/* 🔥 API CALL */
+/* 🤖 API */
 async function getAIReply(message) {
   const res = await fetch("/api/chat", {
     method: "POST",
@@ -100,7 +104,7 @@ async function getAIReply(message) {
   return data.reply;
 }
 
-/* 🔥 SEND MESSAGE */
+/* 🚀 SEND */
 async function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
@@ -116,7 +120,6 @@ async function sendMessage() {
   try {
     let aiReply = await getAIReply(text);
 
-    // nếu bị tiếng Việt → ép lại
     if (containsVietnamese(aiReply)) {
       aiReply = await getAIReply(
         text + "\nRewrite your previous answer in English only."
@@ -140,34 +143,66 @@ async function sendMessage() {
   }
 }
 
-/* 🔥 EVENTS */
-sendBtn.addEventListener("click", sendMessage);
+/* 🎯 EVENTS */
+if (sendBtn) sendBtn.addEventListener("click", sendMessage);
 
-userInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
-  }
-});
-
-// 🧭 SWITCH TAB
-function switchTab(id) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
+if (userInput) {
+  userInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
 }
 
-// 🔥 DATA NHÂN VẬT
+// =======================
+// 📱 NAVIGATION SYSTEM
+// =======================
+
+const pages = document.querySelectorAll(".page");
+const navItems = document.querySelectorAll(".nav-item");
+const createNavBtn = document.getElementById("openCreate");
+
+function showPage(pageId) {
+  pages.forEach(p => p.classList.remove("active"));
+  const page = document.getElementById(pageId);
+  if (page) page.classList.add("active");
+}
+
+// click nav
+navItems.forEach(item => {
+  item.addEventListener("click", () => {
+    const page = item.dataset.page;
+
+    showPage(page);
+
+    navItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+  });
+});
+
+// nút +
+if (createNavBtn) {
+  createNavBtn.addEventListener("click", () => {
+    showPage("create");
+    navItems.forEach(i => i.classList.remove("active"));
+  });
+}
+
+// =======================
+// 🎴 CHARACTER SYSTEM
+// =======================
+
 let characters = JSON.parse(localStorage.getItem("characters")) || [
-  { name: "Noah", desc: "Gentle boy" },
-  { name: "Kai", desc: "Bad boy" }
+  { name: "Noah", desc: "Gentle boy", img: "assets/noah.jpg" },
+  { name: "Kai", desc: "Bad boy", img: "assets/kai.jpg" }
 ];
 
-// 💾 SAVE
 function saveCharacters() {
   localStorage.setItem("characters", JSON.stringify(characters));
 }
 
-// 🎴 RENDER DISCOVER
+/* 🎨 RENDER */
 function renderCharacters(list = characters) {
   const box = document.getElementById("characterList");
   if (!box) return;
@@ -179,14 +214,21 @@ function renderCharacters(list = characters) {
     div.className = "card";
 
     div.innerHTML = `
+      <img src="${c.img || 'assets/bot_idle.png'}">
       <h3>${c.name}</h3>
       <p>${c.desc}</p>
     `;
 
     div.onclick = () => {
       localStorage.setItem("currentCharacter", JSON.stringify(c));
-      document.getElementById("chatName").innerText = c.name;
-      switchTab("home");
+
+      const nameEl = document.getElementById("chatName");
+      if (nameEl) nameEl.innerText = c.name;
+
+      showPage("home");
+
+      navItems.forEach(i => i.classList.remove("active"));
+      document.querySelector('[data-page="home"]')?.classList.add("active");
     };
 
     box.appendChild(div);
@@ -195,19 +237,22 @@ function renderCharacters(list = characters) {
 
 renderCharacters();
 
-// 🔍 SEARCH
+/* 🔍 SEARCH */
 const searchInput = document.getElementById("searchInput");
+
 if (searchInput) {
   searchInput.addEventListener("input", (e) => {
     const v = e.target.value.toLowerCase();
+
     const filtered = characters.filter(c =>
       c.name.toLowerCase().includes(v)
     );
+
     renderCharacters(filtered);
   });
 }
 
-// ➕ CREATE CHARACTER
+/* ➕ CREATE */
 const createBtn = document.getElementById("createBtn");
 
 if (createBtn) {
@@ -222,19 +267,23 @@ if (createBtn) {
     saveCharacters();
     renderCharacters();
 
-    // reset input
+    // reset
     document.getElementById("createName").value = "";
     document.getElementById("createDesc").value = "";
     document.getElementById("createImg").value = "";
 
-    switchTab("discover");
+    showPage("discover");
+
+    navItems.forEach(i => i.classList.remove("active"));
+    document.querySelector('[data-page="discover"]')?.classList.add("active");
   });
 }
 
-// 🧠 LOAD NHÂN VẬT ĐANG CHAT
+/* 🧠 LOAD CURRENT CHAR */
 const savedChar = localStorage.getItem("currentCharacter");
+
 if (savedChar) {
   const char = JSON.parse(savedChar);
   const nameEl = document.getElementById("chatName");
   if (nameEl) nameEl.innerText = char.name;
-                       }
+}
