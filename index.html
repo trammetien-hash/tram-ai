@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chat Bot</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -13,11 +13,10 @@
   <!-- 🏠 HOME -->
   <section id="home" class="page active">
     <div class="app">
-
       <header class="top-bar">
         <div class="bot-info">
-          <img src="assets/bot_idle.png" class="avatar" />
-          <div class="bot-text">
+          <img src="assets/bot_idle.png" class="avatar"/>
+          <div>
             <h2 id="chatName">AI Companion</h2>
             <p class="status">Online</p>
           </div>
@@ -25,37 +24,21 @@
       </header>
 
       <div class="chat-area" id="chatArea">
-        <div class="empty-state" id="emptyState">
-          <p>Start a conversation</p>
-        </div>
+        <div class="empty-state">Start a conversation</div>
       </div>
 
       <footer class="input-bar">
-        <input type="text" id="userInput" placeholder="Type a message..." />
+        <input id="userInput" placeholder="Type a message..."/>
         <button id="sendBtn">Send</button>
       </footer>
-
     </div>
   </section>
 
   <!-- 🔍 DISCOVER -->
   <section id="discover" class="page">
     <div class="discover-page">
-      <input type="text" placeholder="Search..." id="searchInput">
-
-      <div class="grid">
-        <div class="card">
-          <img src="assets/noah.jpg">
-          <h3>Noah</h3>
-          <p>Gentle boy</p>
-        </div>
-
-        <div class="card">
-          <img src="assets/kai.jpg">
-          <h3>Kai</h3>
-          <p>Bad boy</p>
-        </div>
-      </div>
+      <input id="searchInput" placeholder="Search..."/>
+      <div id="characterList" class="grid"></div>
     </div>
   </section>
 
@@ -63,65 +46,34 @@
   <section id="create" class="page">
     <div class="create-page">
       <h2>Create Character</h2>
-      <input type="text" placeholder="Name">
-      <input type="text" placeholder="Description">
-      <input type="text" placeholder="Image URL">
-      <button>Create</button>
+      <input id="createName" placeholder="Name"/>
+      <input id="createDesc" placeholder="Description"/>
+      <input id="createImg" placeholder="Image URL"/>
+      <button id="createBtn">Create</button>
     </div>
   </section>
 
   <!-- 💬 CHATS -->
   <section id="chats" class="page">
-    <div class="chats-page">
-      <h2>Chats</h2>
-      <p>Coming soon...</p>
-    </div>
+    <div class="chats-page">Coming soon...</div>
   </section>
 
   <!-- 👤 PROFILE -->
   <section id="profile" class="page">
-    <div class="profile-page">
-      <h2>Profile</h2>
-      <p>Settings, info...</p>
-    </div>
+    <div class="profile-page">Profile</div>
   </section>
 
 </main>
 
-<!-- 📱 NAV -->
+<!-- NAV -->
 <nav class="bottom-nav">
-
-  <div class="nav-item active" data-page="home">
-  <i data-lucide="home"></i>
-  <span>Home</span>
-</div>
-
-<div class="nav-item" data-page="discover">
-  <i data-lucide="search"></i>
-  <span>Discover</span>
-</div>
-
-<div class="nav-center" id="openCreate">
-  <i data-lucide="plus"></i>
-</div>
-
-<div class="nav-item" data-page="chats">
-  <i data-lucide="message-circle"></i>
-  <span>Chats</span>
-</div>
-
-<div class="nav-item" data-page="profile">
-  <i data-lucide="user"></i>
-  <span>Profile</span>
-            </div>
-  
+  <div class="nav-item active" data-page="home">Home</div>
+  <div class="nav-item" data-page="discover">Discover</div>
+  <div class="nav-center" id="openCreate">+</div>
+  <div class="nav-item" data-page="chats">Chats</div>
+  <div class="nav-item" data-page="profile">Profile</div>
 </nav>
-
-<script src="https://unpkg.com/lucide@latest"></script>
-<script>
-  lucide.createIcons();
-</script>
 
 <script src="script.js"></script>
 </body>
-        </html>
+    </html>
