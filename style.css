@@ -198,28 +198,85 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 60px;
-  background: #111;
-  border-top: 1px solid #222;
+  height: 70px; /* tăng để chứa nút + */
+  background: linear-gradient(to top, #0d0d0d, #111);
+  border-top: 1px solid rgba(255,255,255,0.05);
+
   display: flex;
   justify-content: space-around;
   align-items: center;
+
   z-index: 100;
 }
 
+/* icon thường */
 .bottom-nav button {
   background: none;
   border: none;
-  color: #888;
+  color: #777;
   font-size: 20px;
   cursor: pointer;
   transition: 0.2s;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 11px;
 }
 
+/* icon active (màu tím) */
+.bottom-nav button.active {
+  color: #a78bfa;
+}
+
+/* hover */
 .bottom-nav button:hover {
   color: #fff;
   transform: scale(1.1);
 }
+
+/* 🔥 NÚT + Ở GIỮA */
+.nav-center {
+  position: absolute;
+  top: -22px;
+
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  box-shadow: 
+    0 10px 25px rgba(168,85,247,0.5),
+    0 0 40px rgba(236,72,153,0.4);
+}
+
+/* glow lan ra */
+.nav-center::after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+
+  background: radial-gradient(circle, rgba(168,85,247,0.35), transparent 70%);
+  z-index: -1;
+}
+
+/* icon + */
+.nav-center i {
+  color: white;
+  font-size: 26px;
+}
+
+/* hiệu ứng bấm */
+.nav-center:active {
+  transform: scale(0.9);
+    }
 
 /* 🔍 DISCOVER */
 .discover-page {
