@@ -286,6 +286,31 @@ body {
   transform: translateX(-50%) scale(0.9); /* FIX không lệch */
     }
 
+/* Nav item */
+.nav-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-item i {
+  width: 22px;
+  height: 22px;
+  stroke: #777;
+  transition: 0.2s;
+}
+
+/* active tím */
+.nav-item.active i {
+  stroke: #a78bfa;
+}
+
+/* hover */
+.nav-item:hover i {
+  stroke: #fff;
+  transform: scale(1.15);
+}
+
 /* 🔍 DISCOVER */
 .discover-page {
   padding: 16px;
