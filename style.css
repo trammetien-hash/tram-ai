@@ -319,7 +319,8 @@ body {
 
 #characterList {
   display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px;
 }
 
 .card {
@@ -329,6 +330,7 @@ body {
   border: 1px solid #2A2A2A;
   cursor: pointer;
   transition: 0.2s;
+  min-width: 0;
 }
 
 .card img {
