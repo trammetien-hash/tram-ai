@@ -209,7 +209,20 @@ if (createNavBtn) {
 // 🎴 CHARACTER SYSTEM (UPGRADE)
 // =======================
 
-let characters = JSON.parse(localStorage.getItem("characters")) || [];
+let characters = JSON.parse(localStorage.getItem("characters"));
+
+if (!characters || characters.length === 0) {
+  characters = [
+    {
+      id: "office-smoker",
+      name: "Office Smoker",
+      desc: "A cold, quiet man who always smells like smoke.",
+      img: "assets/bot_idle.png"
+    }
+  ];
+
+  localStorage.setItem("characters", JSON.stringify(characters));
+                                }
 
 function saveCharacters() {
   localStorage.setItem("characters", JSON.stringify(characters));
