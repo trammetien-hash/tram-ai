@@ -82,20 +82,41 @@ function hideTyping() {
   if (typing) typing.remove();
 }
 
-/* 🌐 VIETNAMESE CHECK */
+/* 🌐 CHECK VI */
 function containsVietnamese(text) {
   return /[ăâđêôơưĂÂĐÊÔƠƯ]/.test(text);
 }
 
-/* 🤖 API */
+/* 🤖 API (đã gộp character) */
 async function getAIReply(message) {
+  const saved = localStorage.getItem("currentCharacter");
+
+  let systemPrompt = `
+You are a helpful AI assistant.
+Reply in English only.
+`;
+
+  if (saved) {
+    const char = JSON.parse(saved);
+
+    systemPrompt = `
+You are roleplaying as:
+
+Name: ${char.name}
+Description: ${char.desc}
+
+Stay in character.
+Reply in English only.
+`;
+  }
+
   const res = await fetch("/api/chat", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message: message + "\n(Reply in English only. Do not use Vietnamese.)",
+      message: systemPrompt + "\nUser: " + message,
       history: chatHistory,
     }),
   });
@@ -156,7 +177,7 @@ if (userInput) {
 }
 
 // =======================
-// 📱 NAVIGATION SYSTEM
+// 📱 NAVIGATION
 // =======================
 
 const pages = document.querySelectorAll(".page");
@@ -169,7 +190,6 @@ function showPage(pageId) {
   if (page) page.classList.add("active");
 }
 
-// click nav
 navItems.forEach(item => {
   item.addEventListener("click", () => {
     const page = item.dataset.page;
@@ -181,7 +201,6 @@ navItems.forEach(item => {
   });
 });
 
-// nút +
 if (createNavBtn) {
   createNavBtn.addEventListener("click", () => {
     showPage("create");
@@ -190,13 +209,10 @@ if (createNavBtn) {
 }
 
 // =======================
-// 🎴 CHARACTER SYSTEM
+// 🎴 CHARACTER SYSTEM (CLEAN)
 // =======================
 
-let characters = JSON.parse(localStorage.getItem("characters")) || [
-  { name: "Noah", desc: "Gentle boy", img: "assets/noah.jpg" },
-  { name: "Kai", desc: "Bad boy", img: "assets/kai.jpg" }
-];
+let characters = JSON.parse(localStorage.getItem("characters")) || [];
 
 function saveCharacters() {
   localStorage.setItem("characters", JSON.stringify(characters));
@@ -221,6 +237,7 @@ function renderCharacters(list = characters) {
 
     div.onclick = () => {
       localStorage.setItem("currentCharacter", JSON.stringify(c));
+      chatHistory = []; // 🔥 reset tránh lẫn tính cách
 
       const nameEl = document.getElementById("chatName");
       if (nameEl) nameEl.innerText = c.name;
@@ -267,7 +284,7 @@ if (createBtn) {
     saveCharacters();
     renderCharacters();
 
-    // reset
+    // reset form
     document.getElementById("createName").value = "";
     document.getElementById("createDesc").value = "";
     document.getElementById("createImg").value = "";
@@ -279,11 +296,11 @@ if (createBtn) {
   });
 }
 
-/* 🧠 LOAD CURRENT CHAR */
+/* 🧠 LOAD CURRENT */
 const savedChar = localStorage.getItem("currentCharacter");
 
 if (savedChar) {
   const char = JSON.parse(savedChar);
   const nameEl = document.getElementById("chatName");
   if (nameEl) nameEl.innerText = char.name;
-}
+    }
