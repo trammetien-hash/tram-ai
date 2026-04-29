@@ -87,28 +87,24 @@ function containsVietnamese(text) {
   return /[ăâđêôơưĂÂĐÊÔƠƯ]/.test(text);
 }
 
-/* 🤖 API (đã gộp character) */
-async function getAIReply(message) {
+// =======================
+// 🤖 API (NEW - CLEAN)
+// =======================
+
+function getCurrentCharacterId() {
   const saved = localStorage.getItem("currentCharacter");
+  if (!saved) return "office-smoker";
 
-  let systemPrompt = `
-You are a helpful AI assistant.
-Reply in English only.
-`;
-
-  if (saved) {
+  try {
     const char = JSON.parse(saved);
-
-    systemPrompt = `
-You are roleplaying as:
-
-Name: ${char.name}
-Description: ${char.desc}
-
-Stay in character.
-Reply in English only.
-`;
+    return char.id || char.name.toLowerCase().replace(/\s+/g, "-");
+  } catch {
+    return "office-smoker";
   }
+}
+
+async function getAIReply(message) {
+  const characterName = getCurrentCharacterId();
 
   const res = await fetch("/api/chat", {
     method: "POST",
@@ -116,8 +112,9 @@ Reply in English only.
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message: systemPrompt + "\nUser: " + message,
+      message: message,
       history: chatHistory,
+      characterName: characterName
     }),
   });
 
@@ -143,7 +140,7 @@ async function sendMessage() {
 
     if (containsVietnamese(aiReply)) {
       aiReply = await getAIReply(
-        text + "\nRewrite your previous answer in English only."
+        text + "\nRewrite in English only."
       );
     }
 
@@ -209,7 +206,7 @@ if (createNavBtn) {
 }
 
 // =======================
-// 🎴 CHARACTER SYSTEM (CLEAN)
+// 🎴 CHARACTER SYSTEM (UPGRADE)
 // =======================
 
 let characters = JSON.parse(localStorage.getItem("characters")) || [];
@@ -237,7 +234,10 @@ function renderCharacters(list = characters) {
 
     div.onclick = () => {
       localStorage.setItem("currentCharacter", JSON.stringify(c));
-      chatHistory = []; // 🔥 reset tránh lẫn tính cách
+
+      // 🔥 reset sạch
+      chatHistory = [];
+      chatArea.innerHTML = "";
 
       const nameEl = document.getElementById("chatName");
       if (nameEl) nameEl.innerText = c.name;
@@ -280,11 +280,12 @@ if (createBtn) {
 
     if (!name) return;
 
-    characters.push({ name, desc, img });
+    const id = name.toLowerCase().replace(/\s+/g, "-");
+
+    characters.push({ name, desc, img, id });
     saveCharacters();
     renderCharacters();
 
-    // reset form
     document.getElementById("createName").value = "";
     document.getElementById("createDesc").value = "";
     document.getElementById("createImg").value = "";
@@ -303,4 +304,4 @@ if (savedChar) {
   const char = JSON.parse(savedChar);
   const nameEl = document.getElementById("chatName");
   if (nameEl) nameEl.innerText = char.name;
-    }
+                    }
