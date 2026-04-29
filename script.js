@@ -7,6 +7,7 @@ const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
 
 let chatHistory = [];
+let currentChatId = null; // 🔥 THÊM DÒNG NÀY
 
 /* 🔽 SCROLL */
 function scrollToBottom() {
@@ -253,7 +254,12 @@ function renderCharacters(list = characters) {
     `;
 
     div.onclick = () => {
-      localStorage.setItem("currentCharacter", JSON.stringify(c));
+  localStorage.setItem("currentCharacter", JSON.stringify(c));
+
+  currentChatId = null; // 🔥 THÊM DÒNG NÀY (fix dính bot)
+
+  chatHistory = [];
+  chatArea.innerHTML = "";
 
       // 🔥 reset sạch
       chatHistory = [];
