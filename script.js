@@ -107,6 +107,9 @@ function getCurrentCharacterId() {
 async function getAIReply(message) {
   const characterName = getCurrentCharacterId() || "office-smoker";
 
+console.log("🔥 Using character:", characterName);
+console.log("🔥 Chat ID:", currentChatId);
+
   const res = await fetch("/api/chat", {
     method: "POST",
     headers: {
