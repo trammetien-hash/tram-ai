@@ -92,19 +92,19 @@ function containsVietnamese(text) {
 // =======================
 
 function getCurrentCharacterId() {
-  const saved = localStorage.getItem("currentCharacter");
-  if (!saved) return "office-smoker";
-
   try {
+    const saved = localStorage.getItem("currentCharacter");
+    if (!saved) return null;
+
     const char = JSON.parse(saved);
-    return char.id || char.name.toLowerCase().replace(/\s+/g, "-");
+    return char?.id || null;
   } catch {
-    return "office-smoker";
+    return null;
   }
 }
 
 async function getAIReply(message) {
-  const characterName = getCurrentCharacterId();
+  const characterName = getCurrentCharacterId() || "office-smoker";
 
   const res = await fetch("/api/chat", {
     method: "POST",
@@ -114,11 +114,18 @@ async function getAIReply(message) {
     body: JSON.stringify({
       message: message,
       history: chatHistory,
-      characterName: characterName
+      characterName: characterName,
+      chatId: currentChatId // 🔥 thêm
     }),
   });
 
   const data = await res.json();
+
+  // 🔥 lưu lại chatId
+  if (data.chatId) {
+    currentChatId = data.chatId;
+  }
+
   return data.reply;
 }
 
