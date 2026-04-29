@@ -147,7 +147,9 @@ async function sendMessage() {
   showTyping();
 
   try {
-    let aiReply = await getAIReply(text);
+    let aiReply = await getAIReply(
+  text + "\nReply in English only."
+);
 
     hideTyping();
 
@@ -253,14 +255,10 @@ function renderCharacters(list = characters) {
     div.onclick = () => {
   localStorage.setItem("currentCharacter", JSON.stringify(c));
 
-  currentChatId = null; // 🔥 THÊM DÒNG NÀY (fix dính bot)
+  currentChatId = null;
 
-  chatHistory = [];
-  chatArea.innerHTML = "";
-
-      // 🔥 reset sạch
-      chatHistory = [];
-      chatArea.innerHTML = "";
+chatHistory = [];
+chatArea.innerHTML = "";
 
       const nameEl = document.getElementById("chatName");
       if (nameEl) nameEl.innerText = c.name;
