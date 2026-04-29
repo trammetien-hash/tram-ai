@@ -10,7 +10,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, history = [], characterName = "office-smoker" } = req.body;
+    const {
+      message,
+      history = [],
+      characterName = "office-smoker",
+      chatId, // ✅ thêm nhưng không bắt buộc
+    } = req.body;
 
     if (!message || typeof message !== "string") {
       return res.status(400).json({
@@ -19,7 +24,7 @@ export default async function handler(req, res) {
     }
 
     // 🔥 LOAD CHARACTER JSON
-    let character = null;
+    let character = {};
 
     try {
       const characterPath = path.join(
@@ -49,8 +54,21 @@ export default async function handler(req, res) {
     // 🎬 CHECK FIRST MESSAGE
     const isFirstMessage = safeHistory.length === 0;
 
-    // 😈 SYSTEM PROMPT (UPGRADE)
-    const systemPrompt = `
+    // =========================
+    // 😈 SYSTEM TÁCH RIÊNG (FIX)
+    // =========================
+
+    const systemBase = `
+You are a roleplay engine.
+
+Rules:
+- Always fully become the character
+- Never act like an AI assistant
+- Never break character
+- Never merge personalities between characters
+`;
+
+    const characterPrompt = `
 ${character?.system_prompt || ""}
 
 You are roleplaying as this character:
@@ -64,27 +82,28 @@ ${JSON.stringify(character?.personality || {}, null, 2)}
 World:
 ${JSON.stringify(character?.world || {}, null, 2)}
 
-Stay in character at all times.
-
-Write in immersive roleplay style:
+ROLEPLAY STYLE:
 - Include actions, environment, and body language
 - Show emotions through behavior
 - Use natural dialogue
 - Build tension when appropriate
+- Vary response length (not too short, not overly long)
 
-Avoid:
-- sounding like an AI
-- breaking character
-- short, dry replies
-
-Make the interaction feel alive and dynamic.
+IMPORTANT:
+- Stay 100% in character
+- Never sound like an AI
+- Never break role
 `;
 
     // 💬 BUILD MESSAGES
     const messages = [
       {
         role: "system",
-        content: systemPrompt,
+        content: systemBase,
+      },
+      {
+        role: "system",
+        content: characterPrompt,
       },
 
       ...(isFirstMessage && character?.first_message
@@ -135,20 +154,22 @@ Make the interaction feel alive and dynamic.
     const reply =
       data?.choices?.[0]?.message?.content?.trim() || "No response.";
 
-    // 💾 CHAT ID (tạm vẫn random như m đang dùng)
-    const chatId = crypto.randomUUID();
+    // 💾 CHAT ID (FIX)
+    const finalChatId = chatId || crypto.randomUUID();
 
     // 💾 SAVE SUPABASE
     const { error: dbError } = await supabase.from("messages").insert([
       {
         role: "user",
         content: message,
-        chat_id: chatId,
+        chat_id: finalChatId,
+        character: characterName, // ✅ thêm để tách char
       },
       {
         role: "assistant",
         content: reply,
-        chat_id: chatId,
+        chat_id: finalChatId,
+        character: characterName, // ✅ thêm để tách char
       },
     ]);
 
@@ -159,6 +180,7 @@ Make the interaction feel alive and dynamic.
     // ✅ RESPONSE
     return res.status(200).json({
       reply,
+      chatId: finalChatId, // ✅ trả về để frontend reuse
     });
   } catch (error) {
     console.error("Server Error:", error);
@@ -167,4 +189,4 @@ Make the interaction feel alive and dynamic.
       error: "Server error",
     });
   }
-        }
+  }
