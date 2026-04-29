@@ -149,12 +149,6 @@ async function sendMessage() {
   try {
     let aiReply = await getAIReply(text);
 
-    if (containsVietnamese(aiReply)) {
-      aiReply = await getAIReply(
-        text + "\nRewrite in English only."
-      );
-    }
-
     hideTyping();
 
     chatHistory.push({ role: "assistant", content: aiReply });
