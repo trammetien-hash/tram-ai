@@ -25,7 +25,11 @@ export default async function handler(req, res) {
   typeof message !== "string" ||
   message.trim().length === 0 ||
   message.length > 1000
-) {
+)
+    if (message.length > 500) {
+  console.warn("Tin nhắn dài:", message.length);
+    }
+  {
   return res.status(400).json({
     error: "Invalid message",
   });
@@ -136,6 +140,10 @@ IMPORTANT:
       },
     ];
 
+    if (!process.env.GROQ_API_KEY) {
+  throw new Error("Missing API key");
+    }
+    
     // 🚀 CALL GROQ
     console.time("groq");
     const controller = new AbortController();
@@ -183,11 +191,6 @@ try {
     error: data.error?.message || "Groq API error",
   });
 }
-
-      return res.status(response.status).json({
-        error: data.error?.message || "Groq API error",
-      });
-    }
 
     if (!data.choices || !data.choices.length) {
   throw new Error("Invalid AI response");
