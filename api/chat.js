@@ -130,22 +130,28 @@ IMPORTANT:
     ];
 
     // 🚀 CALL GROQ
-    const response = await fetch(
-      "https://api.groq.com/openai/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-        },
-        body: JSON.stringify({
-          model: "llama-3.1-8b-instant",
-          temperature: 0.85,
-          max_tokens: 500,
-          messages,
-        }),
-      }
-    );
+    const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 10000);
+
+const response = await fetch(
+  "https://api.groq.com/openai/v1/chat/completions",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: "llama-3.1-8b-instant",
+      temperature: 0.85,
+      max_tokens: 500,
+      messages,
+    }),
+    signal: controller.signal,
+  }
+);
+
+clearTimeout(timeout);
 
     const data = await response.json();
 
@@ -159,7 +165,10 @@ IMPORTANT:
 
     if (!data.choices || !data.choices.length) {
   throw new Error("Invalid AI response");
-        } || "No response.";
+}
+
+const reply =
+  data.choices[0]?.message?.content?.trim() || "No response.";
 
     // 💾 CHAT ID (FIX)
     const finalChatId = chatId || crypto.randomUUID();
