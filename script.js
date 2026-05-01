@@ -194,24 +194,6 @@ function showPage(pageId) {
   if (page) page.classList.add("active");
 }
 
-navItems.forEach(item => {
-  item.addEventListener("click", () => {
-    const page = item.dataset.page;
-
-    showPage(page);
-
-    navItems.forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
-  });
-});
-
-if (createNavBtn) {
-  createNavBtn.addEventListener("click", () => {
-    showPage("create");
-    navItems.forEach(i => i.classList.remove("active"));
-  });
-}
-
 // =======================
 // 🎴 CHARACTER SYSTEM (UPGRADE)
 // =======================
@@ -265,10 +247,6 @@ chatArea.innerHTML = "";
 
       showPage("home");
 
-      navItems.forEach(i => i.classList.remove("active"));
-      document.querySelector('[data-page="home"]')?.classList.add("active");
-    };
-
     box.appendChild(div);
   });
 }
@@ -313,8 +291,6 @@ if (createBtn) {
 
     showPage("discover");
 
-    navItems.forEach(i => i.classList.remove("active"));
-    document.querySelector('[data-page="discover"]')?.classList.add("active");
   });
 }
 
