@@ -107,8 +107,8 @@ function getCurrentCharacterId() {
 async function getAIReply(message) {
   const characterName = getCurrentCharacterId() || "office-smoker";
 
-console.log("🔥 Using character:", characterName);
-console.log("🔥 Chat ID:", currentChatId);
+  console.log("🔥 Using character:", characterName);
+  console.log("🔥 Chat ID:", currentChatId);
 
   const res = await fetch("/api/chat", {
     method: "POST",
@@ -119,17 +119,18 @@ console.log("🔥 Chat ID:", currentChatId);
       message: message,
       history: chatHistory,
       characterName: characterName,
-      chatId: currentChatId // 🔥 thêm
+      chatId: currentChatId
     }),
   });
 
   const data = await res.json();
 
-if (!res.ok) {
-  throw new Error(data.error || "API error");
-}
+  if (!res.ok) {
+    throw new Error(data.error || "API error");
+  }
 
-return data.reply;
+  return data.reply;
+} // 🔥 THÊM DẤU NÀY
 
 /* 🚀 SEND */
 async function sendMessage() {
