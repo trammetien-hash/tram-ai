@@ -173,7 +173,7 @@ if (sendBtn) sendBtn.addEventListener("click", sendMessage);
 
 if (userInput) {
   userInput.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
@@ -185,8 +185,6 @@ if (userInput) {
 // =======================
 
 const pages = document.querySelectorAll(".page");
-const navItems = document.querySelectorAll(".nav-item");
-const createNavBtn = document.getElementById("openCreate");
 
 function showPage(pageId) {
   pages.forEach(p => p.classList.remove("active"));
@@ -238,16 +236,16 @@ function renderCharacters(list = characters) {
   localStorage.setItem("currentCharacter", JSON.stringify(c));
 
   currentChatId = null;
+  chatHistory = [];
+  chatArea.innerHTML = "";
 
-chatHistory = [];
-chatArea.innerHTML = "";
+  const nameEl = document.getElementById("chatName");
+  if (nameEl) nameEl.innerText = c.name;
 
-      const nameEl = document.getElementById("chatName");
-      if (nameEl) nameEl.innerText = c.name;
+  showPage("home");
+};
 
-      showPage("home");
-
-    box.appendChild(div);
+box.appendChild(div);
   });
 }
 
