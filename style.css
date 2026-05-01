@@ -206,3 +206,28 @@ body {
     transform: translateY(0);
   }
   }
+
+.profile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-box {
+  background: #0f0f0f;
+  padding: 20px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 400px;
+  border: 1px solid #00ff99;
+}
+
+.hidden {
+  display: none;
+  }
