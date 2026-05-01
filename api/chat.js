@@ -11,6 +11,31 @@ export default async function handler(req, res) {
   }
 
   try {
+  // 🚫 SIMPLE RATE LIMIT
+const ip = req.headers["x-forwarded-for"] || "unknown";
+
+global.rateLimit = global.rateLimit || {};
+
+const now = Date.now();
+const windowMs = 10 * 1000; // 10s
+const maxReq = 10;
+
+if (!global.rateLimit[ip]) {
+  global.rateLimit[ip] = [];
+}
+
+global.rateLimit[ip] = global.rateLimit[ip].filter(
+  (t) => now - t < windowMs
+);
+
+if (global.rateLimit[ip].length >= maxReq) {
+  return res.status(429).json({
+    error: "Too many requests",
+  });
+}
+
+global.rateLimit[ip].push(now);
+
     const {
       message,
       history = [],
@@ -146,7 +171,6 @@ IMPORTANT:
     const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 10000);
 
-const response = await fetch(
 let response;
 let retry = 0;
 
