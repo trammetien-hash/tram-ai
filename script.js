@@ -180,6 +180,8 @@ if (userInput) {
   });
 }
 
+userInput.focus();
+
 // =======================
 // 📱 NAVIGATION
 // =======================
@@ -187,7 +189,9 @@ if (userInput) {
 const pages = document.querySelectorAll(".page");
 
 function showPage(pageId) {
+  const pages = document.querySelectorAll(".page"); // move vào đây
   pages.forEach(p => p.classList.remove("active"));
+
   const page = document.getElementById(pageId);
   if (page) page.classList.add("active");
 }
