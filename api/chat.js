@@ -18,6 +18,8 @@ export default async function handler(req, res) {
       chatId, // ✅ thêm nhưng không bắt buộc
     } = req.body;
 
+    const safeCharacterName = characterName.replace(/[^a-zA-Z0-9-_]/g, "");
+
     if (!message || typeof message !== "string" || message.length > 1000) {
   return res.status(400).json({
     error: "Invalid message",
@@ -31,7 +33,7 @@ export default async function handler(req, res) {
       const characterPath = path.join(
         process.cwd(),
         "characters",
-        `${characterName}.json`
+        `${safeCharacterName}.json`
       );
 
       const file = await fs.promises.readFile(characterPath, "utf-8");
@@ -130,6 +132,7 @@ IMPORTANT:
     ];
 
     // 🚀 CALL GROQ
+    console.time("groq");
     const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), 10000);
 
@@ -152,8 +155,10 @@ const response = await fetch(
 );
 
 clearTimeout(timeout);
+    console.timeEnd("groq");
 
     const data = await response.json();
+    console.log("AI raw:", JSON.stringify(data).slice(0, 200));
 
     if (!response.ok) {
       console.error("Groq API Error:", data);
@@ -175,18 +180,20 @@ const reply =
 
     // 💾 SAVE SUPABASE
     const { error: dbError } = await supabase.from("messages").insert([
+    {
+  role: "user",
+  content: message,
+  chat_id: finalChatId,
+  character: characterName,
+  created_at: new Date().toISOString(),
+},
       {
-        role: "user",
-        content: message,
-        chat_id: finalChatId,
-        character: characterName, // ✅ thêm để tách char
-      },
-      {
-        role: "assistant",
-        content: reply,
-        chat_id: finalChatId,
-        character: characterName, // ✅ thêm để tách char
-      },
+  role: "assistant",
+  content: reply,
+  chat_id: finalChatId,
+  character: characterName,
+  created_at: new Date().toISOString(),
+},
     ]);
 
     if (dbError) {
