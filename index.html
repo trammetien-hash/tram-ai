@@ -31,6 +31,18 @@
     </div>
   </section>
 
+  <div id="profileModal" class="profile-modal hidden">
+  <div class="profile-box">
+    <h3>Profile</h3>
+
+    <input id="userName" placeholder="Your name..." />
+    <input id="botName" placeholder="Bot name..." />
+    <textarea id="bio" placeholder="Your vibe..."></textarea>
+
+    <button onclick="saveProfile()">Save</button>
+  </div>
+  </div>
+
   <script src="https://unpkg.com/lucide@latest"></script>
 <script>
   lucide.createIcons();
