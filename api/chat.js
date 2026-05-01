@@ -1,6 +1,7 @@
 import supabase from "../lib/supabase.js";
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -33,8 +34,13 @@ export default async function handler(req, res) {
         `${characterName}.json`
       );
 
-      const file = fs.readFileSync(characterPath, "utf-8");
-      character = JSON.parse(file);
+      const file = await fs.promises.readFile(characterPath, "utf-8");
+      try {
+  character = JSON.parse(file);
+} catch (e) {
+  console.error("Invalid JSON:", e);
+  character = {};
+      }
     } catch (err) {
       console.error("Character load error:", err);
     }
