@@ -25,14 +25,14 @@ export default async function handler(req, res) {
   typeof message !== "string" ||
   message.trim().length === 0 ||
   message.length > 1000
-)
-    if (message.length > 500) {
-  console.warn("Tin nhắn dài:", message.length);
-    }
-  {
+) {
   return res.status(400).json({
     error: "Invalid message",
   });
+}
+
+if (message.length > 500) {
+  console.warn("Tin nhắn dài:", message.length);
 }
 
     // 🔥 LOAD CHARACTER JSON
