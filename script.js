@@ -156,10 +156,10 @@ async function sendMessage() {
     chatHistory.push({ role: "assistant", content: aiReply });
     if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
 
-    if (aiReply.length > 180) {
-      addMessage(aiReply, "bot");
-    } else {
-      typeMessage(aiReply, "bot");
+    if (aiReply.length < 200) {
+  typeMessage(aiReply, "bot");
+} else {
+  addMessage(aiReply, "bot");
     }
 
   } catch (err) {
