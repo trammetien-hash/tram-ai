@@ -48,9 +48,11 @@ function typeMessage(text, sender) {
       p.textContent += text.charAt(i);
       i++;
 
-      if (i % 6 === 0) scrollToBottom();
+      if (i % 4 === 0) scrollToBottom();
 
-      const speed = Math.random() * 25 + 35;
+      const speed = text.length > 120
+  ? Math.random() * 10 + 15
+  : Math.random() * 25 + 35;
       setTimeout(typeWriter, speed);
     } else {
       scrollToBottom();
