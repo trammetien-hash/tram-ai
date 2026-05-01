@@ -157,11 +157,24 @@ const response = await fetch(
 clearTimeout(timeout);
     console.timeEnd("groq");
 
-    const data = await response.json();
+    let data;
+
+try {
+  data = await response.json();
+} catch (e) {
+  console.error("JSON parse error:", e);
+  return res.status(500).json({
+    error: "Invalid response from AI",
+  });
+        }
     console.log("AI raw:", JSON.stringify(data).slice(0, 200));
 
     if (!response.ok) {
       console.error("Groq API Error:", data);
+
+      if (!process.env.GROQ_API_KEY) {
+  throw new Error("Missing API key");
+      }
 
       return res.status(response.status).json({
         error: data.error?.message || "Groq API error",
@@ -184,14 +197,14 @@ const reply =
   role: "user",
   content: message,
   chat_id: finalChatId,
-  character: characterName,
+  character: safeCharacterName,
   created_at: new Date().toISOString(),
 },
       {
   role: "assistant",
   content: reply,
   chat_id: finalChatId,
-  character: characterName,
+  character: safeCharacterName,
   created_at: new Date().toISOString(),
 },
     ]);
