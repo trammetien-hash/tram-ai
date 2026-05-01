@@ -306,3 +306,19 @@ if (savedChar) {
   const nameEl = document.getElementById("chatName");
   if (nameEl) nameEl.innerText = char.name;
                     }
+
+function openProfile() {
+  document.getElementById("profileModal").classList.remove("hidden");
+}
+
+function saveProfile() {
+  const profile = {
+    userName: userName.value,
+    botName: botName.value,
+    bio: bio.value
+  };
+
+  localStorage.setItem("tram_profile", JSON.stringify(profile));
+
+  document.getElementById("profileModal").classList.add("hidden");
+                                                        }
