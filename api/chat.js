@@ -20,7 +20,12 @@ export default async function handler(req, res) {
 
     const safeCharacterName = characterName.replace(/[^a-zA-Z0-9-_]/g, "");
 
-    if (!message || typeof message !== "string" || message.length > 1000) {
+    if (
+  !message ||
+  typeof message !== "string" ||
+  message.trim().length === 0 ||
+  message.length > 1000
+) {
   return res.status(400).json({
     error: "Invalid message",
   });
@@ -167,14 +172,17 @@ try {
     error: "Invalid response from AI",
   });
         }
-    console.log("AI raw:", JSON.stringify(data).slice(0, 200));
+    if (process.env.NODE_ENV === "development") {
+  console.log("AI raw:", JSON.stringify(data).slice(0, 200));
+    }
 
     if (!response.ok) {
-      console.error("Groq API Error:", data);
+  console.error("Groq API Error:", data);
 
-      if (!process.env.GROQ_API_KEY) {
-  throw new Error("Missing API key");
-      }
+  return res.status(response.status).json({
+    error: data.error?.message || "Groq API error",
+  });
+}
 
       return res.status(response.status).json({
         error: data.error?.message || "Groq API error",
@@ -215,9 +223,10 @@ const reply =
 
     // ✅ RESPONSE
     return res.status(200).json({
-      reply,
-      chatId: finalChatId, // ✅ trả về để frontend reuse
-    });
+  reply,
+  chatId: finalChatId,
+  createdAt: new Date().toISOString(),
+});
   } catch (error) {
     console.error("Server Error:", error);
 
