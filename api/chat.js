@@ -20,20 +20,17 @@ export default async function handler(req, res) {
 
     const safeCharacterName = characterName.replace(/[^a-zA-Z0-9-_]/g, "");
 
-    if (
-  !message ||
-  typeof message !== "string" ||
-  message.trim().length === 0 ||
-  message.length > 1000
-) {
+    if (!message || typeof message !== "string" || message.trim().length === 0) {
   return res.status(400).json({
     error: "Invalid message",
   });
 }
 
 if (message.length > 500) {
-  console.warn("Tin nhắn dài:", message.length);
-}
+  return res.status(400).json({
+    error: "Message too long",
+  });
+  }
 
     // 🔥 LOAD CHARACTER JSON
     let character = {};
@@ -150,29 +147,71 @@ IMPORTANT:
 const timeout = setTimeout(() => controller.abort(), 10000);
 
 const response = await fetch(
-  "https://api.groq.com/openai/v1/chat/completions",
-  {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "llama-3.1-8b-instant",
-      temperature: 0.85,
-      max_tokens: 500,
-      messages,
-    }),
-    signal: controller.signal,
+let response;
+let retry = 0;
+
+while (retry < 2) {
+  try {
+    response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "llama-3.1-8b-instant",
+          temperature: 0.85,
+          max_tokens: 500,
+          messages,
+        }),
+        signal: controller.signal,
+      }
+    );
+
+    break; // ✅ thành công thì thoát loop
+  } catch (err) {
+    retry++;
+    console.warn("Retry lần:", retry);
+
+    if (retry >= 2) {
+      throw err;
+    }
   }
-);
+}
 
 clearTimeout(timeout);
-    console.timeEnd("groq");
+console.timeEnd("groq");
 
     let data;
 
 try {
+  // 🚫 SIMPLE RATE LIMIT
+const ip = req.headers["x-forwarded-for"] || "unknown";
+
+global.rateLimit = global.rateLimit || {};
+
+const now = Date.now();
+const windowMs = 10 * 1000; // 10s
+const maxReq = 10;
+
+if (!global.rateLimit[ip]) {
+  global.rateLimit[ip] = [];
+}
+
+global.rateLimit[ip] = global.rateLimit[ip].filter(
+  (t) => now - t < windowMs
+);
+
+if (global.rateLimit[ip].length >= maxReq) {
+  return res.status(429).json({
+    error: "Too many requests",
+  });
+}
+
+global.rateLimit[ip].push(now);
+  
   data = await response.json();
 } catch (e) {
   console.error("JSON parse error:", e);
