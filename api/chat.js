@@ -18,11 +18,11 @@ export default async function handler(req, res) {
       chatId, // ✅ thêm nhưng không bắt buộc
     } = req.body;
 
-    if (!message || typeof message !== "string") {
-      return res.status(400).json({
-        error: "Invalid message",
-      });
-    }
+    if (!message || typeof message !== "string" || message.length > 1000) {
+  return res.status(400).json({
+    error: "Invalid message",
+  });
+}
 
     // 🔥 LOAD CHARACTER JSON
     let character = {};
