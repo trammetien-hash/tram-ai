@@ -322,3 +322,17 @@ function saveProfile() {
 
   document.getElementById("profileModal").classList.add("hidden");
                                                         }
+
+function loadProfile() {
+  const saved = localStorage.getItem("tram_profile");
+  if (!saved) return;
+
+  const profile = JSON.parse(saved);
+
+  if (profile.botName) {
+    const nameEl = document.getElementById("chatName");
+    if (nameEl) nameEl.innerText = profile.botName;
+  }
+}
+
+loadProfile();
