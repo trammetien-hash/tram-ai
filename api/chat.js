@@ -12,7 +12,8 @@ export default async function handler(req, res) {
 
   try {
   // 🚫 SIMPLE RATE LIMIT
-const ip = req.headers["x-forwarded-for"] || "unknown";
+const ip =
+  req.headers["x-forwarded-for"]?.split(",")[0] || "unknown";
 
 global.rateLimit = global.rateLimit || {};
 
