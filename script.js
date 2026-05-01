@@ -125,13 +125,11 @@ console.log("🔥 Chat ID:", currentChatId);
 
   const data = await res.json();
 
-  // 🔥 lưu lại chatId
-  if (data.chatId) {
-    currentChatId = data.chatId;
-  }
-
-  return data.reply;
+if (!res.ok) {
+  throw new Error(data.error || "API error");
 }
+
+return data.reply;
 
 /* 🚀 SEND */
 async function sendMessage() {
@@ -144,6 +142,7 @@ async function sendMessage() {
   if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
 
   userInput.value = "";
+  userInput.focus();
   showTyping();
 
   try {
