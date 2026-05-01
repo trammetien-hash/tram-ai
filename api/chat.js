@@ -157,8 +157,9 @@ IMPORTANT:
       });
     }
 
-    const reply =
-      data?.choices?.[0]?.message?.content?.trim() || "No response.";
+    if (!data.choices || !data.choices.length) {
+  throw new Error("Invalid AI response");
+        } || "No response.";
 
     // 💾 CHAT ID (FIX)
     const finalChatId = chatId || crypto.randomUUID();
