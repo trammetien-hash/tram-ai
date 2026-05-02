@@ -246,3 +246,67 @@ body {
 .profile-btn:hover {
   box-shadow: 0 0 10px var(--accent-glow);
   }
+
+/* CHAR BAR */
+.char-bar {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  padding: 8px 14px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(0,255,156,0.2);
+}
+
+.char-bar img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.char-bar span {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* PANEL */
+.char-panel {
+  position: fixed;
+  bottom: -100%;
+  left: 0;
+  width: 100%;
+  height: 45%;
+  background: #0a0a0a;
+  transition: 0.3s;
+}
+
+.char-panel.show {
+  bottom: 0;
+}
+
+.panel-content {
+  padding: 20px;
+}
+
+.char-item {
+  padding: 12px;
+  margin-bottom: 10px;
+  background: #111;
+  border-radius: 12px;
+}
+
+/* SEND BUTTON */
+.send-btn {
+  background: linear-gradient(135deg, #00ff9c, #00c3ff);
+  border: none;
+  padding: 12px;
+  border-radius: 50%;
+  color: black;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ff9c;
+  }
