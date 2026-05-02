@@ -145,7 +145,7 @@ async function sendMessage() {
   addMessage(text, "user");
 
   chatHistory.push({ role: "user", content: text });
-  if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+  if (chatHistory.length > 30) chatHistory = chatHistory.slice(-12);
 
   userInput.value = "";
   userInput.focus();
