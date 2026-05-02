@@ -13,27 +13,39 @@
   <!-- 🏠 HOME -->
   <section id="home" class="page active">
     <div class="app">
-      <!-- CHARACTER BAR -->
-<div class="char-bar" onclick="togglePanel()">
-  <img src="assets/bot_idle.png" />
-  <span id="botDisplay">Unnamed bot</span>
-</div>
-      
+
+      <!-- TOP BAR -->
       <header class="top-bar">
-  <button class="profile-btn" onclick="openProfile()">☰</button>
+        <button class="profile-btn" onclick="openProfile()">☰</button>
       </header>
 
+      <!-- ⭐ CHARACTER BAR (DUY NHẤT) -->
+      <div class="char-bar" onclick="togglePanel()">
+        <img id="botAvatar" src="assets/bot_idle.png" />
+        <span id="botDisplay">Choose a bot</span>
+      </div>
+
+      <!-- CHAT -->
       <div class="chat-area" id="chatArea"></div>
 
-<footer class="input-bar">
-  
-        <input id="userInput" placeholder="Type a message..."/>
+      <!-- INPUT -->
+      <footer class="input-bar">
+        <input 
+          id="userInput" 
+          type="text"
+          placeholder="Type a message..."
+          autocomplete="off"
+        />
         <button id="sendBtn" class="send-btn">➤</button>
       </footer>
+
     </div>
   </section>
 
-  <div id="profileModal" class="profile-modal hidden">
+</main>
+
+<!-- 🧑 PROFILE -->
+<div id="profileModal" class="profile-modal hidden">
   <div class="profile-box">
     <h3>Profile</h3>
 
@@ -43,20 +55,30 @@
 
     <button onclick="saveProfile()">Save</button>
   </div>
+</div>
+
+<!-- 🔥 OVERLAY CHỌN BOT -->
+<div id="panel" class="panel hidden">
+
+  <!-- click ngoài để đóng -->
+  <div class="overlay" onclick="togglePanel()"></div>
+
+  <div class="panel-box">
+
+    <h3>Choose your bot</h3>
+
+    <!-- 🧠 để trống → sau này m render bằng JS -->
+    <div id="botList"></div>
+
   </div>
-  
-<!-- CHARACTER PANEL -->
-  <div id="panel" class="panel-content">
-    <div class="char-item">🤖 Bot 1</div>
-    <div class="char-item">😎 Chill bot</div>
-    <div class="char-item">👻 Ghost bot</div>
-  </div>
-  </div>
-  
-  <script src="https://unpkg.com/lucide@latest"></script>
+
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
 <script>
   lucide.createIcons();
 </script>
 <script src="script.js"></script>
+
 </body>
-    </html>
+        </html>
