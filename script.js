@@ -336,3 +336,7 @@ function loadProfile() {
 }
 
 loadProfile();
+
+function togglePanel() {
+  document.getElementById("panel").classList.toggle("show");
+}
