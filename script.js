@@ -5,6 +5,9 @@
 const chatArea = document.getElementById("chatArea");
 const userInput = document.getElementById("userInput");
 const sendBtn = document.getElementById("sendBtn");
+const userName = document.getElementById("userName");
+const botName = document.getElementById("botName");
+const bio = document.getElementById("bio");
 
 let chatHistory = [];
 let currentChatId = null; // 🔥 THÊM DÒNG NÀY
@@ -150,7 +153,7 @@ async function sendMessage() {
 
   try {
     let aiReply = await getAIReply(
-  text + "\nReply in English only."
+  text + "\nReply in same language as user."
 );
 
     hideTyping();
@@ -245,7 +248,7 @@ function renderCharacters(list = characters) {
   chatHistory = [];
   chatArea.innerHTML = "";
 
-  const nameEl = document.getElementById("chatName");
+  const nameEl = document.getElementById("botDisplay");
   if (nameEl) nameEl.innerText = c.name;
 
   showPage("home");
@@ -322,6 +325,8 @@ function saveProfile() {
 
   document.getElementById("profileModal").classList.add("hidden");
                                                         }
+const nameEl = document.getElementById("botDisplay");
+if (nameEl) nameEl.innerText = profile.botName;
 
 function loadProfile() {
   const saved = localStorage.getItem("tram_profile");
