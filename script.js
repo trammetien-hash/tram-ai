@@ -325,8 +325,6 @@ function saveProfile() {
 
   document.getElementById("profileModal").classList.add("hidden");
                                                         }
-const nameEl = document.getElementById("botDisplay");
-if (nameEl) nameEl.innerText = profile.botName;
 
 function loadProfile() {
   const saved = localStorage.getItem("tram_profile");
@@ -335,7 +333,7 @@ function loadProfile() {
   const profile = JSON.parse(saved);
 
   if (profile.botName) {
-    const nameEl = document.getElementById("chatName");
+    const nameEl = document.getElementById("botDisplay");
     if (nameEl) nameEl.innerText = profile.botName;
   }
 }
