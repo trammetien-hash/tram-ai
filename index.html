@@ -13,22 +13,21 @@
   <!-- 🏠 HOME -->
   <section id="home" class="page active">
     <div class="app">
+      <!-- CHARACTER BAR -->
+<div class="char-bar" onclick="togglePanel()">
+  <img src="assets/bot_idle.png" />
+  <span id="botDisplay">Unnamed bot</span>
+</div>
+      
       <header class="top-bar">
-  <div class="bot-info">
-    <img src="assets/bot_idle.png" class="avatar"/>
-    <h2 id="chatName">AI Companion</h2>
-  </div>
-
-  <button class="profile-btn" onclick="openProfile()">⚙️</button>
+  <button class="profile-btn" onclick="openProfile()">☰</button>
       </header>
 
       <div class="chat-area" id="chatArea">
-        <div class="empty-state">Start a conversation</div>
-      </div>
 
       <footer class="input-bar">
         <input id="userInput" placeholder="Type a message..."/>
-        <button id="sendBtn">Send</button>
+        <button id="sendBtn" class="send-btn">➤</button>
       </footer>
     </div>
   </section>
@@ -44,7 +43,16 @@
     <button onclick="saveProfile()">Save</button>
   </div>
   </div>
-
+  
+<!-- CHARACTER PANEL -->
+<div class="char-panel hidden" id="panel">
+  <div class="panel-content">
+    <div class="char-item">🤖 Bot 1</div>
+    <div class="char-item">😎 Chill bot</div>
+    <div class="char-item">👻 Ghost bot</div>
+  </div>
+  </div>
+  
   <script src="https://unpkg.com/lucide@latest"></script>
 <script>
   lucide.createIcons();
