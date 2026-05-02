@@ -306,9 +306,9 @@ const savedChar = localStorage.getItem("currentCharacter");
 
 if (savedChar) {
   const char = JSON.parse(savedChar);
-  const nameEl = document.getElementById("chatName");
-  if (nameEl) nameEl.innerText = char.name;
-                    }
+  const nameEl = document.getElementById("botDisplay");
+if (nameEl) nameEl.innerText = char.name;
+}
 
 function openProfile() {
   document.getElementById("profileModal").classList.remove("hidden");
@@ -343,3 +343,17 @@ loadProfile();
 function togglePanel() {
   document.getElementById("panel").classList.toggle("show");
 }
+
+const nameEl = document.getElementById("botDisplay");
+if (nameEl && botName.value) {
+  nameEl.innerText = botName.value;
+}
+
+document.addEventListener("click", (e) => {
+  const panel = document.getElementById("panel");
+  const bar = document.querySelector(".char-bar");
+
+  if (!panel.contains(e.target) && !bar.contains(e.target)) {
+    panel.classList.remove("show");
+  }
+});
