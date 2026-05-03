@@ -40,7 +40,7 @@ global.rateLimit[ip].push(now);
     const {
       message,
       history = [],
-      characterName = "office-smoker",
+      characterName = "gentle-giant",
       chatId, // ✅ thêm nhưng không bắt buộc
     } = req.body;
 
