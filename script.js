@@ -210,15 +210,15 @@ let characters = JSON.parse(localStorage.getItem("characters"));
 if (!characters || characters.length === 0) {
   characters = [
     {
-      id: "office-smoker",
-      name: "Office Smoker",
-      desc: "A cold, quiet man who always smells like smoke.",
+      id: "gentle-giant",
+      name: "Gentle Giant",
+      desc: "A constant presence that never fully lets go...",
       img: "assets/bot_idle.png"
     }
   ];
 
   localStorage.setItem("characters", JSON.stringify(characters));
-                                }
+    }
 
 function saveCharacters() {
   localStorage.setItem("characters", JSON.stringify(characters));
