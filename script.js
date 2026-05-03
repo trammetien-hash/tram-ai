@@ -311,7 +311,8 @@ if (nameEl) nameEl.innerText = char.name;
 }
 
 function openProfile() {
-  document.getElementById("profileModal").classList.remove("hidden");
+  document.getElementById("profileModal").classList.add("active");
+  document.body.classList.add("modal-open");
 }
 
 function saveProfile() {
@@ -323,8 +324,9 @@ function saveProfile() {
 
   localStorage.setItem("tram_profile", JSON.stringify(profile));
 
-  document.getElementById("profileModal").classList.add("hidden");
-                                                        }
+  document.getElementById("profileModal").classList.remove("active");
+  document.body.classList.remove("modal-open");
+}
 
 function loadProfile() {
   const saved = localStorage.getItem("tram_profile");
