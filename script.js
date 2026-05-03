@@ -110,7 +110,7 @@ function getCurrentCharacterId() {
 }
 
 async function getAIReply(message) {
-  const characterName = getCurrentCharacterId() || "gentle Giant";
+  const characterName = getCurrentCharacterId() || "gentle-giant";
 
   console.log("🔥 Using character:", characterName);
   console.log("🔥 Chat ID:", currentChatId);
