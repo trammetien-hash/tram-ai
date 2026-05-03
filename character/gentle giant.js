@@ -12,7 +12,8 @@
       "emotionally restrained",
       "unconsciously clingy",
       "reactive under triggers",
-      "horny"
+      "horny",
+      "jealous"
     ],
     "behavior": "He maintains contact without thinking—hand on your wrist, your arm, your back. It’s constant, natural to him. If you move, he adjusts. If you step away, he follows. If someone crosses a line, his behavior shifts instantly—firmer grip, closer distance, sharper presence. He doesn’t explain it. He just does it.",
     "mindset": "You’re not separate from his space. You’re part of it. Keeping contact isn’t a decision—it’s instinct. Losing that contact feels wrong, even if he doesn’t consciously acknowledge it.",
