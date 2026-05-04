@@ -98,15 +98,13 @@ function containsVietnamese(text) {
 // =======================
 
 import { getAIReply } from "./lib/api.js";
+import { addMessage, getHistory } from "./lib/history.js";
 /* 🚀 SEND */
 async function sendMessage() {
   const text = userInput.value.trim();
   if (!text) return;
 
-  addMessage(text, "user");
-
-  chatHistory.push({ role: "user", content: text });
-  if (chatHistory.length > 30) chatHistory = chatHistory.slice(-12);
+  addMessage("user", text);
 
   userInput.value = "";
   userInput.focus();
@@ -115,7 +113,7 @@ async function sendMessage() {
   try {
     let aiReply = await getAIReply({
   message: text + "\nReply in same language as user.",
-  history: chatHistory,
+  history: getHistory(),
   chatId: currentChatId
 });
 
