@@ -97,46 +97,7 @@ function containsVietnamese(text) {
 // 🤖 API (NEW - CLEAN)
 // =======================
 
-function getCurrentCharacterId() {
-  try {
-    const saved = localStorage.getItem("currentCharacter");
-    if (!saved) return null;
-
-    const char = JSON.parse(saved);
-    return char?.id || null;
-  } catch {
-    return null;
-  }
-}
-
-async function getAIReply(message) {
-  const characterName = getCurrentCharacterId() || "gentle-giant";
-
-  console.log("🔥 Using character:", characterName);
-  console.log("🔥 Chat ID:", currentChatId);
-
-  const res = await fetch("/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: message,
-      history: chatHistory,
-      characterName: characterName,
-      chatId: currentChatId
-    }),
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(data.error || "API error");
-  }
-
-  return data.reply;
-} // 🔥 THÊM DẤU NÀY
-
+import { getAIReply } from "./lib/api.js";
 /* 🚀 SEND */
 async function sendMessage() {
   const text = userInput.value.trim();
@@ -152,9 +113,11 @@ async function sendMessage() {
   showTyping();
 
   try {
-    let aiReply = await getAIReply(
-  text + "\nReply in same language as user."
-);
+    let aiReply = await getAIReply({
+  message: text + "\nReply in same language as user.",
+  history: chatHistory,
+  chatId: currentChatId
+});
 
     hideTyping();
 
