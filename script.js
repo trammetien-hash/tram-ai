@@ -9,8 +9,9 @@ const userName = document.getElementById("userName");
 const botName = document.getElementById("botName");
 const bio = document.getElementById("bio");
 
-let chatHistory = [];
-let currentChatId = null; // 🔥 THÊM DÒNG NÀY
+let currentChatId = localStorage.getItem("chatId") || crypto.randomUUID();
+
+localStorage.setItem("chatId", currentChatId);
 
 /* 🔽 SCROLL */
 function scrollToBottom() {
@@ -114,7 +115,7 @@ async function sendMessage() {
 
   try {
 
-  const history = await getMessages();   
+  const history = await getMessages(currentChatId);   
   const memory = await getMemory();      
 
   let prompt = buildPrompt({
@@ -125,7 +126,7 @@ async function sendMessage() {
 
   let aiReply = await getAIReply({
     message: prompt,
-    history: [],
+    history: history,
     chatId: currentChatId
   });
 
