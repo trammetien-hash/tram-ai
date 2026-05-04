@@ -98,8 +98,7 @@ function containsVietnamese(text) {
 // =======================
 
 import { getAIReply } from "./lib/api.js";
-import { addMessage, getHistory } from "./lib/history.js";
-import { addMemory, getMemory } from "./lib/memory.js";
+import { addMessage, getMessages } from "./lib/memory.js";
 import { buildPrompt } from "./lib/formatter.js";
 
 /* 🚀 SEND */
@@ -114,17 +113,21 @@ async function sendMessage() {
   showTyping();
 
   try {
-    let prompt = buildPrompt({
-  message: text,
-  history: getHistory(),
-  memory: getMemory()
-});
 
-let aiReply = await getAIReply({
-  message: prompt,
-  history: [],
-  chatId: currentChatId
-});
+  const history = await getMessages();   
+  const memory = await getMemory();      
+
+  let prompt = buildPrompt({
+    message: text,
+    history: history,
+    memory: memory
+  });
+
+  let aiReply = await getAIReply({
+    message: prompt,
+    history: [],
+    chatId: currentChatId
+  });
 
     hideTyping();
 
